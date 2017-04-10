@@ -1,0 +1,11 @@
+#!/bin/bash
+
+printf "Testing permutation-counting algorithms..."
+nodejs RegressionTests.js > test.out
+test_out=$(diff Master.out test.out)
+if test -z "$test_out"
+then
+    echo "passed."
+else
+    echo "failed."
+fi
