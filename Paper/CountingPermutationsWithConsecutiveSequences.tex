@@ -70,13 +70,35 @@
 \setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
 
 \begin{document}
-\author{Thomas Becker}
-\title{A General Purpose Algorithm for Counting Permutations with Consecutive Sequences}
-\date{March 13, 2017}
+\author{Thomas Becker\\ {\small \it thomas@greaterthanzero.com}}
+\title{Two General Purpose Algorithms for Counting Permutations with Consecutive Sequences}
+\date{\small March 13, 2017}
 \maketitle
 
 \begin{abstract}
+  We state, prove the correctness of, and discuss the complexity of two general
+  purpose algorithms for counting permutations with specified configurations of
+  consecutive sequences. The algorithms are based on a theorem that describes how
+  the number of permutations with consecutive sequences is linked to the number of
+  permutations with no consecutive sequences at all.
 \end{abstract}
+
+\section{Preface}
+Combinatorial mathematics is not my specialty as a mathematician. However, I recently wrote
+a rather lightweight blog post \cite{BlogPost} on the subject of random shuffle mode on today's
+music players. In the process, I needed to know the number of permutations with certain
+configurations of consecutive sequences. The answers to many of my questions were readily
+available on the Web (see e.g. \cite{Oeis}),
+but there were also some questions to which I did not find the answer. Therefore, I sat down
+and wrote two general-purpose algorithms---one building upon the other---to quickly
+calculate the numbers that I needed. The algorithms are available on github \cite{Algos}.
+I checked the results against the Online Encyclopedia of Integer Sequences \cite{Oeis} and
+against brute force for small numbers of elements. But since the correctness of the algorithms
+is far from obvious, I also felt that formal mathematical correctness proofs should be available.
+I am quite certain that combinatorial mathematicians already know everything that is needed
+for these correctness proofs, but again, I was not able to find the things I needed online.
+That is the reason why I wrote this paper. Any feedback, particularly regarding references to
+the literature, would be much appreciated.
 
 \section{Introduction}
 
@@ -95,33 +117,42 @@
 
 There is a vast body of work regarding the count of permutations that have a specified configuration of
 consecutive sequences, such as permutations having a certain number of consecutive pairs or triples
-\cite{OEIS}. In this paper, we state, prove the correctness of, and discuss the complexity of two general
+\cite{OeisRefs}. In this paper, we state, prove the correctness of, and discuss the complexity of two general
 purpose algorithms for
 counting permutations whose maximal consecutive sequences are described in certain ways. The need
-for these algorithms, which are available under the MIT license \cite{algos}, arose from the author's curiosity
-about the behavior of random shuffle mode on today's music players \cite{blog_post}.
+for these algorithms, which are available under the MIT license \cite{Algos}, arose from the author's curiosity
+about the behavior of random shuffle mode on today's music players \cite{BlogPost}. The algorithms do not
+use the (more generally applicable) inclusion-exclusion principle that is often employed for counting
+permutations with certain properties. Instead, it relies on a technique of reducing the problem of counting
+permutations with consecutive sequences to the problem of counting permutations with no consecutive sequences
+at all. This technique is a generalized form of an argument that the author encountered in a Quora post by Jed Yang
+\cite{JedYang}.
 
-In Theorem \ref{theorem_count_by_length_and_initial_element}, we give an auxiliary algorithm on which the
+The organization of the paper is as follows. In Theorem \ref{theorem_count_by_length_and_initial_element},
+we give an auxiliary algorithm on which the
 two main algorithms are based. It calculates the number of permutations that satisfy a specification of
 maximal consecutive sequences by initial elements and lengths.
 
 Theorem \ref{theorem_count_by_length_and_count}
 provides an algorithm to count the permutations whose maximal consecutive sequences have been specified by
 stating how many exactly of each length there should be. Using that algorithm, one may, for example,
-calculate the number of permutations that have exactly three consecutive pairs, none of which are joined
+calculate the number of permutations that have exactly three consecutive pairs, none of which are linked
 to form a consecutive triple (specify ``three maximal consecutive sequences of length two, zero maximal
 consecutive sequences of any other length'').
 
 Building on top of that, Theorem \ref{theorem_count_by_length_and_count} describes a generic, customizable algorithm
-that iterates over all possible configurations of maximal consecutive sequences by length and count.
+that iterates over configurations of maximal consecutive sequences by length and count.
 A user-supplied function decides if permutations with a given configuration should be included in the count or not.
 For example, the user-supplied function could accept any configuration that specifies a non-zero count for maximal
 sequences of length two and a zero count for all other lengths, and reject all others configurations.
 The result would be the number
-of permutations that have any number of consecutive pairs, but no adjacent pairs that form larger
-consecutive sequences.
+of permutations that have any number of consecutive pairs, but no linked pairs that form larger
+consecutive sequences. When the algorithm iterates over {\it all} possible specifications of maximal
+consecutive sequences by length and count, its complexity is only marginally better than a brute force
+solution to the problem. However, our implementation provides custumizability that can lead to vastly
+improved complexity in many cases, such as the example that we just mentioned.
 
-\section{Specifying Consecutive Sequences by Lengths And Initial Elements}
+\section{Specifying Maximal Consecutive Sequences by Lengths And Initial Elements}
 
 \begin{definition} \label{def_mcs_spec_by_length_and_initial_element}
   Let $n$ be an integer with $n\geq 1$. An {\bf MCS-specification by lengths and initial elements} for $n$ is a
@@ -321,7 +352,7 @@ $(a_1, a_2, \ldots, a_m)$ maps to the permutation where $i$ is the element at po
 Under this map, maximal consecutive sequences of length $k$ with initial element $a$ map to maximal
 consecutive sequences of length $k$ that start at position $a$ and vise versa.
 
-\section{Specifying Consecutive Sequences by Lengths And Counts}
+\section{Specifying Maximal Consecutive Sequences by Lengths And Counts}
 
 \begin{definition} \label{def_mcs_spec_by_length_and_count}
   Let $n$ be an integer with $n\geq 1$. An {\bf MCS-specification by lengths and counts} for $n$ is a
@@ -483,22 +514,38 @@ Therefore, the following theorem requires no further proof.
   \endproof
 \end{theorem}
 
-Since the algorithm of theorem \ref{theorem_iterating_over_specs_by_count_by_length_and_count} iterates over all
-MCS-specifications by lengths and counts for $n$, it is clear that it is exponential in $n$. The
-implementation of the algorithm at \cite{algos} organizes the process of accepting and rejecting
-specifications by lengths and counts in such a way that in many cases, not every specification needs
-to be looked at.
+The problem with this ``algorithm'' is that the number of MCS-specifications by lengths and counts
+for $n$ equals $(\lfloor\frac{n}{2}\rfloor + 1 )!$, and therefore, the algorithm affords no real advantage over
+the brute force solution of looking at every permutation and checking if it meets the desired
+requirement. Our implementation of the algorithm \cite{Algos} allows the user to customize the
+algorithm in such a way that the number of generated MCS-specifications by lengths and counts
+drops dramatically, but is still large enough to answer common questions. For example, when
+calculating the number of permutations that have maximal consecutive pairs but no other maximal
+consecutive sequences, that is, permutations that have any number of consecutive pairs none of
+which are linked to form longer consecutive sequences, the algorithm can be restricted so it
+only looks at $O(n)$ MCS-specifications by lengths and counts.
 
 \bibliographystyle{alpha}
 \begin{thebibliography}{0}
 
-\bibitem{OEIS}
+\bibitem{Oeis}
+  \href{http://oeis.org/}{Online Encyclopedia of Integer Sequences}
+
+\bibitem{OeisRefs}
+
+
   Even if the author's mathematical specialty were combinatorics, which it is not,
   it would be foolish to attempt an overview or an even remotely complete set of references
   in a short article like this. A good place to learn about existing results and start finding
   references is the \href{http://oeis.org/}{Online Encyclopedia of Integer Sequences}, specifically
  the entries \href{http://oeis.org/A010027}{A010027}, \href{http://oeis.org/A002628}{A002628}, and
   \href{http://oeis.org/A000255}{A0000255}.
+
+\bibitem{Algos}
+    \href{https://github.com/walkswiththebear/ConsecutiveSequences}{ConsecutiveSequences on github}.
+
+\bibitem{BlogPost}
+    \href{http://blog.greaterthanzero.com}{Some Mathematics, Algorithms, and Probabilities Concerning Your Music Player’s Random Shuffle Mode} at the \href{https://www.greaterthanzero.com}{GreaterThanZero} company blog. 
 
 \bibitem{JedYang}
   \href{https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order}{This proof by Jed Yang}
