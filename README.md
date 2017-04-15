@@ -4,10 +4,10 @@
 have certain configurations of consecutive sequences.
 
 ## Overview
-Consider a permutation p of the n natural numbers {0, 1, ..., n-1}, and let k >= 2. A
-*consecutive sequence* of length k in the permutation is an occurrence of k consecutive
+Consider a permutation p of the n natural numbers {1, ..., n}, and let k >= 2. A
+**consecutive sequence** of length k in the permutation is an occurrence of k consecutive
 integers in the permutation, that is, an occurrence of a contiguous subsequence of the
-form (i, i+1, ..., i+k-1). A *maximal consecutive sequence* is a consecutive sequence
+form (i, i+1, ..., i+k-1). A **maximal consecutive sequence** is a consecutive sequence
 that is not part of a longer consecutive sequence.
  
 ConsecutiveSequences.js contains various algorithms for counting permutations with and 
@@ -20,7 +20,8 @@ without certain consecutive sequences.
 Returns the number of permutations of `numElements` elements that have no consecutive sequences.
 The result typ is bigInt. 
 
-This is based on the [recurrence relation given by Jed Yang on Quora](https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order). 
+This is based on the 
+<a href="https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order" target="_blank">recurrence relation given by Jed Yang on Quora</a>. 
 Since the recursive formula for calculating the result for n elements refers to the value for 
 n&minus;1 and n&minus;2 elements, a straightforward implementation is exponential in n. This 
 function implements a bottom-up version that uses constant space and linear time.
