@@ -15,7 +15,7 @@ without certain consecutive sequences.
 
 ## Algorithms
 
-### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
+###`numberOfPermutationsWithNoConsecutiveSequences(numElements)`
 
 Returns the number of permutations of `numElements` elements that have no consecutive sequences.
 The result typ is bigInt. 
@@ -32,7 +32,7 @@ function implements a bottom-up version that uses constant space and linear time
 
 ***
 
-### `numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElementsIn, mcsSpecificationByLengthsAndCounts)`
+### `numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElements, mcsSpecificationByLengthsAndCounts)`
 
 An MCS-specification by lengths and counts is a map that specifies, for each possible length, the
 number of maximal consecutive sequences of that length. This function returns the number of
@@ -47,7 +47,7 @@ the returned number of permutations will be greater than zero. Otherwise, it wil
 
 If a sequence length does not occur as a key in the map `mcsSpecificationByLengthsAndCounts`, the
 number of maximal consecutive sequences of that length is assumed to be zero. However, a zero number of 
-requested maximal consecutive sequences may also be requested explicitly with a zero value.
+maximal consecutive sequences may also be requested explicitly with a zero value.
 
 #### Preconditions:
 - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
@@ -63,7 +63,7 @@ and as integers, they are a subset of the set {2, ..., `numElements`}.
 
 ### `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements, selectionCondition)`
 
-An MCS-specification by lengths and counts is a map (i.e., a js object)that specifies, for each possible length,
+An MCS-specification by lengths and counts is a map (i.e., a js object) that specifies, for each possible length,
 the number of maximal consecutive sequences of that length. This function iterates over all MCS-specifications
 by lengths and counts for `numElements` and lets a client-supplied selection condition decide which ones to accept
 and which ones to reject. The function returns the number of permutations that meet any one of the accepted 
