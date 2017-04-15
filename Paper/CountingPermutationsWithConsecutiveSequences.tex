@@ -90,14 +90,14 @@ music players. In the process, I needed to know the number of permutations with 
 configurations of consecutive sequences. The answers to many of my questions were readily
 available on the Web (see e.g. \cite{Oeis}),
 but there were also some questions to which I did not find the answer. Therefore, I sat down
-and wrote two general-purpose algorithms---one building upon the other---to quickly
+and wrote two general-purpose algorithms---one building upon the other---to conveniently
 calculate the numbers that I needed. The algorithms are available on github \cite{Algos}.
 I checked the results against the Online Encyclopedia of Integer Sequences \cite{Oeis} and
 against brute force for small numbers of elements. But since the correctness of the algorithms
 is far from obvious, I also felt that formal mathematical correctness proofs should be available.
-I am quite certain that combinatorial mathematicians already know everything that is needed
-for these correctness proofs, but again, I was not able to find the things I needed online.
-That is the reason why I wrote this paper. Any feedback, particularly regarding references to
+That is the reason why I wrote this paper. I am quite certain that there is nothing here that
+combinatorial mathematicians don't already know, but again, I was not able to quite find the things I
+needed online. Any feedback, particularly regarding references to
 the literature, would be much appreciated.
 
 \section{Introduction}
@@ -515,7 +515,11 @@ Therefore, the following theorem requires no further proof.
 \end{theorem}
 
 The problem with this ``algorithm'' is that the number of MCS-specifications by lengths and counts
-for $n$ equals $(\lfloor\frac{n}{2}\rfloor + 1 )!$, and therefore, the algorithm affords no real advantage over
+for $n$ equals
+$$
+\prod_{i=2}^{n}\lfloor\frac{n}{i}\rfloor + 1\,,
+$$
+which is similar to $\frac{n^n}{n!}$. Therefore, the algorithm affords little advantage over
 the brute force solution of looking at every permutation and checking if it meets the desired
 requirement. Our implementation of the algorithm \cite{Algos} allows the user to customize the
 algorithm in such a way that the number of generated MCS-specifications by lengths and counts
@@ -542,13 +546,13 @@ only looks at $O(n)$ MCS-specifications by lengths and counts.
   \href{http://oeis.org/A000255}{A0000255}.
 
 \bibitem{Algos}
-    \href{https://github.com/walkswiththebear/ConsecutiveSequences}{ConsecutiveSequences on github}.
+    \href{https://github.com/walkswiththebear/ConsecutiveSequences}{ConsecutiveSequences} on github.
 
 \bibitem{BlogPost}
     \href{http://blog.greaterthanzero.com}{Some Mathematics, Algorithms, and Probabilities Concerning Your Music Player’s Random Shuffle Mode} at the \href{https://www.greaterthanzero.com}{GreaterThanZero} company blog. 
 
 \bibitem{JedYang}
-  \href{https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order}{This proof by Jed Yang}
+ This \href{https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order}{proof by Jed Yang}
   on Quora is short, elegant, and self-contained.
 
 \end{thebibliography}

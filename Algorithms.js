@@ -91,13 +91,13 @@ algorithms = new function()
      *
      * The argument mcsSpecificationByLengthsAndCounts must be a map whose keys are a subset of the set
      * {2, ..., numElements}. For each key k, the value of k is interpreted as the desired number of
-     * consecutive sequences of length k. If the combined length of all requested consecutive sequences (i.e.,
-     * the sum of k * value(k) over all keys k) is less than numElements, the returned number of permutations
-     * will be greater than zero. Otherwise, it will be zero.
+     * maximal consecutive sequences of length k. If the combined length of all requested maximal
+     * consecutive sequences (i.e., the sum of k * value(k) over all keys k) is less than numElements,
+     * the returned number of permutations will be greater than zero. Otherwise, it will be zero.
      *
      * If a sequence length does not occur as a key in the map mcsSpecificationByLengthsAndCounts, the number
-     * of consecutive sequences of that length is assumed to be zero. However, a zero number of requested consecutive
-     * sequences may also be requested explicitly with a zero value.
+     * of maximal consecutive sequences of that length is assumed to be zero. However, a zero number of requested
+     * maximal consecutive sequences may also be requested explicitly with a zero value.
      *
      * Preconditions:
      * ==============
