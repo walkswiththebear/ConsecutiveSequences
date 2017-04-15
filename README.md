@@ -15,7 +15,7 @@ without certain consecutive sequences.
 
 ## Algorithms
 
-###`numberOfPermutationsWithNoConsecutiveSequences(numElements)`
+### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
 
 Returns the number of permutations of `numElements` elements that have no consecutive sequences.
 The result typ is bigInt. 
@@ -71,7 +71,7 @@ MCS-specifications. The result type is bigInt. See the documentation of the func
 for details on how the client-supplied selection condition needs to be written.
 
 The total number of MCS-specifications by lengths and counts is large: it approximately equals 
-`numElements`<sup>`numElements`</sup> / `numElements`!. Therefore, the client-supplied selection
+`numElements`<sup>`numElements`</sup>` / numElements!`. Therefore, the client-supplied selection
 condition offers ways to cut down on the number of MCS-specifications that this function presents for
 selection. See the documentation of the function `getNewSelectionCondition` for details.
 
