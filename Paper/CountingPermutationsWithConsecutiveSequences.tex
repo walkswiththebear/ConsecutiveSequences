@@ -59,6 +59,7 @@
   \newtheorem{purpose}{Purpose of this Section}
 }
 \renewcommand{\thepurpose}{\kern -5pt}
+\renewcommand\refname{References and Notes}
 
 \def\proof{\par \noindent              %--- PROOF ----------------------
 \mbox{\bf Proof}\ \,}                  %
@@ -507,7 +508,7 @@ Therefore, the following theorem requires no further proof.
   lengths and counts for $n$, and let $f$ be a function from ${\mathcal T}$ to the set $\{\, 0, 1\,\}$.
   Then the expression
   $$
-  \sum_{\{\,T \in{\mathcal T}\,\mid\, f(T) = 1\,\}}|{\mathcal R}_{(n,T)}|
+  \sum_{\{\,T \in{\mathcal T}\,\mid\, f(T) = 1\,\}}|{\mathcal R}_{(n,T)}|\eqno(3)
   $$
   amounts to an algorithm for calculating the number of permutations that meet exactly
   those MCS-specifications by lengths and counts for $n$ on which the function $f$ returns $1$.
@@ -521,13 +522,26 @@ $$
 $$
 which is similar to $\frac{n^n}{n!}$. Therefore, the algorithm affords little advantage over
 the brute force solution of looking at every permutation and checking if it meets the desired
-requirement. Our implementation of the algorithm \cite{Algos} allows the user to customize the
-algorithm in such a way that the number of generated MCS-specifications by lengths and counts
-drops dramatically, but is still large enough to answer common questions. For example, when
+requirement \cite{NumAtoms}. Our implementation of the algorithm \cite{Algos} offers an optimization that
+cuts down on the number of MCS-specifications by lengths and counts that are considered in
+the sum in (3) above. The user can specify a lower and/or upper bound for non-zero lengths
+of maximal consecutive sequences. If $l$ and $u$ are the specified bounds, then the algorithm
+will include only those MCS-specifications by lengths and counts in the sum in (3) above that
+specify 0 for any length less than $l$ and greater than $u$.
+
+For example, when
 calculating the number of permutations that have maximal consecutive pairs but no other maximal
 consecutive sequences, that is, permutations that have any number of consecutive pairs none of
-which are linked to form longer consecutive sequences, the algorithm can be restricted so it
-only looks at $O(n)$ MCS-specifications by lengths and counts.
+which are linked to form longer consecutive sequences, one would tell the algorithm
+to only generate those MCS-specifications by lengths and counts that specify a zero count for all lengths
+greater than 2. This cuts the length of the sum in (3) above down to $\lfloor\frac{n}{2}\rfloor + 1$. 
+
+Sometimes, it takes a bit of creativity to avoid the worst-case complexity of $\frac{n^n}{n!}$. Suppose,
+for example, that you wish to calculate the number of permutations that have at least one consecutive
+sequence of length greater than or equal to $u$ for some $u$.
+As it stands, this condition does not allow you to use the lower bound/upper bound optimization.
+But you could also calculate the number of permutations that have no maximal consecutive sequences
+greater than or equal to $u$ and then subtract that from $n!$.
 
 \bibliographystyle{alpha}
 \begin{thebibliography}{0}
@@ -555,6 +569,11 @@ only looks at $O(n)$ MCS-specifications by lengths and counts.
  This \href{https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order}{proof by Jed Yang}
   on Quora is short, elegant, and self-contained.
 
+\bibitem{NumAtoms}
+  It is a matter of discretion how much of an improvement over brute force one would consider an algorithm
+  whose complexity is of the order $\frac{n^n}{n!}$. Just consider that $60!$ is roughly equal to the number of atoms
+  in the known, observable universe, while the generation of the approximately $\frac{n^n}{n!}$ many
+  MCS-specifications by lengths and counts still chugs along happily at $n=95$.
 \end{thebibliography}
 
 \end{document}
