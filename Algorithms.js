@@ -346,11 +346,9 @@ algorithms = new function()
      * selectionCondition.acceptMcsSpecification(spec);
      *
      * for every MCS-specification by lengths and counts. Here, spec is an array whose entry at index i is
-     * the number of maximal consecutive sequences of length i. If the client-supplied function
-     * acceptMcsSpecification returns true on such a specification, the permutations that meet that specification
-     * will be accepted for the count; otherwise, they won't be. See the function
-     * numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo below for an
-     * example of how to write the acceptMcsSpecification function for your selection condition.
+     * the number of maximal consecutive sequences of length i. (The entries at i=0 and i=1 are always 0.)
+     * If the client-supplied function acceptMcsSpecification returns true on such a specification, the
+     * permutations that meet that specification will be accepted for the count; otherwise, they won't be.
      *
      * There is one optimization that may allow the client to cut down on the number of MCS-specifications by
      * lengths and counts that need to be looked at. If you pass an integer minLength as the second argument to
@@ -359,9 +357,31 @@ algorithms = new function()
      * If you pass an integer maxLength as the third argument to getNewSelectionCondition, then only those
      * MCS-specifications by lengths and counts will be presented to your selection condition that specify zero
      * maximal consecutive sequences for every length greater than maxLength. If you want to pass just the third
-     * argument but not the second, pass a falsy value for the second argument. See the function
-     * numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange below for an example of how to use
+     * argument but not the second, pass a falsy value for the second argument.
+     *
+     * See the functions
+     *
+     * numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange
+     *
+     * and
+     *
+     * numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo
+     *
+     * below for examples of how to write the acceptMcsSpecification function and use the minLength/maxLength
+     * optimization for your selection condition.
+
+     * below for an example of how to use
      * the minLength/maxLength optimization.
+     *
+     * Preconditions:
+     * ==============
+     *
+     * noMaximalConsecutiveSequencesOfLengthLessThan is a js integer, and
+     * noMaximalConsecutiveSequencesOfLengthLessThan >= 2.
+     *
+     * noMaximalConsecutiveSequencesOfLengthGreaterThan is a js integer, and
+     * noMaximalConsecutiveSequencesOfLengthGreaterThan >= 1.
+     *
      */
     this.getNewSelectionCondition = function(
         acceptMcsSpecification,
