@@ -13,9 +13,13 @@ that is not part of a longer consecutive sequence.
 ConsecutiveSequences.js contains various algorithms for counting permutations with and 
 without certain consecutive sequences.
 
-## Algorithms
+## Usage
 
-### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
+### Installation
+
+### Algorithms
+
+#### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
 
 Returns the number of permutations of `numElements` elements that have no consecutive sequences.
 The result typ is bigInt. 
@@ -26,13 +30,13 @@ Since the recursive formula for calculating the result for n elements refers to 
 n&minus;1 and n&minus;2 elements, a straightforward implementation is exponential in n. This 
 function implements a bottom-up version that uses constant space and linear time.
     
-#### Precondition
+##### Precondition
  - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
 `numElements` >= 1.
 
 ***
 
-### `numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElements, mcsSpecificationByLengthsAndCounts)`
+#### `numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElements, mcsSpecificationByLengthsAndCounts)`
 
 An MCS-specification by lengths and counts is a map that specifies, for each possible length, the
 number of maximal consecutive sequences of that length. This function returns the number of
@@ -49,7 +53,7 @@ If a sequence length does not occur as a key in the map `mcsSpecificationByLengt
 number of maximal consecutive sequences of that length is assumed to be zero. However, a zero number of 
 maximal consecutive sequences may also be requested explicitly with a zero value.
 
-#### Preconditions:
+##### Preconditions:
 - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
 `numElements` >= 1.
 
@@ -61,7 +65,7 @@ and as integers, they are a subset of the set {2, ..., `numElements`}.
 
 ***
 
-### `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements, selectionCondition)`
+#### `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements, selectionCondition)`
 
 An MCS-specification by lengths and counts is a map (i.e., a js object) that specifies, for each possible length,
 the number of maximal consecutive sequences of that length. This function iterates over all MCS-specifications
@@ -75,7 +79,7 @@ The total number of MCS-specifications by lengths and counts is large: it approx
 condition offers ways to cut down on the number of MCS-specifications that this function presents for
 selection. See the documentation of the function `getNewSelectionCondition` for details.
 
-#### Preconditions:
+##### Preconditions:
 
  - `numElements` is a javascript integer, and `numElements` >= 1.
 
@@ -83,7 +87,7 @@ selection. See the documentation of the function `getNewSelectionCondition` for 
 
 ***
 
-### `getNewSelectionCondition(acceptMcsSpecification, [noMaximalConsecutiveSequencesOfLengthLessThan, noMaximalConsecutiveSequencesOfLengthGreaterThan])`
+#### `getNewSelectionCondition(acceptMcsSpecification, [noMaximalConsecutiveSequencesOfLengthLessThan, noMaximalConsecutiveSequencesOfLengthGreaterThan])`
 
 Factory function for obtaining a new selection condition, to be used with the function
 `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts`. Read the documentation
@@ -118,7 +122,7 @@ the `minLength`/`maxLength` optimization.
 
 ***
 
-### `numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements, minLength, maxLength)`
+#### `numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements, minLength, maxLength)`
 
 Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
 sequence within a specified length range, but none of any length outside that range.
@@ -126,7 +130,7 @@ sequence within a specified length range, but none of any length outside that ra
 This algorithm is provided mainly as an example of how to use the `minLength`/`maxLength` feature of
 the selection condition for the function `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts`.
 
-#### Preconditions:
+##### Preconditions:
 
  - `numElements` is a js integer, and `numElements` >= 1.
 
@@ -136,7 +140,7 @@ the selection condition for the function `numberOfPermutationsThatMeetCertainMcs
 
 ***
 
-### `numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo(numElements, minLength)`
+#### `numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo(numElements, minLength)`
 
 Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
 sequence of length greater than or equal to `minLength`. Note that "having at least one maximal consecutive
@@ -151,7 +155,7 @@ However, if one calculates the number of permutations that do *not* have any max
 sequences of length greater than or equal to the minimum length and then subtracts that from the 
 number of all permutations, then the optimization can be applied.
 
-#### Preconditions:
+##### Preconditions:
 
  - `numElements` is a js integer, and `numElements` >= 1.
 
@@ -159,7 +163,7 @@ number of all permutations, then the optimization can be applied.
 
 ***
 
-### `numberOfPermutationsByConsecutivePairCount(numElements)`
+#### `numberOfPermutationsByConsecutivePairCount(numElements)`
 
 Returns an array of length `numElements` such that the entry at index i is the
 number of permutations with i consecutive pairs. The array elements are of type bigInt.
@@ -169,7 +173,7 @@ that seems to work only for consecutive pairs, but not for consecutive sequences
 greater length. It is used in the regression tests for this package as a means of
 double-checking the results of other algorithms.
 
-#### Precondition
+##### Precondition
 
 - `numElements` is a javascript integer and numElements >= 1. NOTE: `numElements` cannot 
 be a bigInt because the function returns an array of length `numElements`.
