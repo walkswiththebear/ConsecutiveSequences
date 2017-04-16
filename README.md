@@ -175,6 +175,4 @@ double-checking the results of other algorithms.
 
 ##### Precondition
 
-- `numElements` is a javascript integer and numElements >= 1. NOTE: `numElements` cannot 
-be a bigInt because the function returns an array of length `numElements`.
-
+- `numElements` is a js integer and numElements >= 1.
