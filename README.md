@@ -175,4 +175,4 @@ double-checking the results of other algorithms.
 
 ##### Precondition
 
-- `numElements` is a js integer and numElements >= 1.
+- `numElements` is a js integer and `numElements` >= 1.
