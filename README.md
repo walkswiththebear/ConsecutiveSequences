@@ -22,7 +22,7 @@ without certain consecutive sequences.
 #### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
 
 Returns the number of permutations of `numElements` elements that have no consecutive sequences.
-The result typ is bigInt. 
+The result type is bigInt. 
 
 This is based on the 
 <a href="https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order" target="_blank">recurrence relation given by Jed Yang on Quora</a>. 
