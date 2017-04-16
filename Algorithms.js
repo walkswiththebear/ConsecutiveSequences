@@ -374,53 +374,6 @@ algorithms = new function()
     };
 
     /**
-     * Algorithm for the Number of Permutations with at least One Maximal Consecutive Sequence Longer than
-     * ===================================================================================================
-     *
-     * Returns the number of permutations of numElements elements that have at least one maximal consecutive
-     * sequence of length greater than or equal to a specified minimum length.
-     *
-     * This algorithm is provided mainly as an example of how to write a selection condition for the function
-     * numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
-     *
-     * Recall that a consecutive sequence of length k in a permutation is an occurrence of
-     * (..., i, ..., i + k - 1, ...) in the permutation, with k >= 2, and a maximal consecutive
-     * sequence is a consecutive sequence that is not part of a longer consecutive sequence.
-     *
-     * Preconditions:
-     * ==============
-     *
-     * 1. numElements is a javascript integer, and numElements >= 1
-     *
-     * 2. minLength is a javascript integer, and minLength >= 2
-     */
-    this.numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo = function(
-        numElements,
-        minLength
-    )
-    {
-        var acceptMcsSpecification = function(
-            mcsSpecificationByLengthsAndCounts
-        )
-        {
-            var bigZero = bigInt.zero;
-            var i;
-
-            for(i = minLength; i <= numElements; ++i)
-            {
-                if(mcsSpecificationByLengthsAndCounts[i].gt(bigZero))
-                {
-                    return true;
-                }
-            }
-            return false;
-        };
-
-        return this.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements,
-            this.getNewSelectionCondition(acceptMcsSpecification));
-    };
-
-    /**
      * Algorithm for the Number of Permutations with Maximal Consecutive Sequences only in a Specified Length Range
      * ============================================================================================================
      *
@@ -468,6 +421,49 @@ algorithms = new function()
 
         return this.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements,
             this.getNewSelectionCondition(acceptMcsSpecification, minLength, maxLength));
+    };
+
+    /**
+     * Algorithm for the Number of Permutations with at least One Maximal Consecutive Sequence Longer than
+     * ===================================================================================================
+     *
+     * Returns the number of permutations of numElements elements that have at least one maximal consecutive
+     * sequence of length greater than or equal to a specified minimum length.
+     *
+     * This algorithm is provided mainly as an example of how to write a selection condition for the function
+     * numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts. Also, this function demonstrates
+     * that it may take a little creativity to get the most out of the minLength/maxLength optimization that
+     * the selection condition offers. A straightforward implementation of this function would not be able
+     * to use that optimization. However, if one calculates the number of permutations that do *not* have any
+     * maximal consecutive sequences of length greater than or equal to the minimum length and then subtracts
+     * that from the number of all permutations, then the optimization can be applied.
+     *
+     * Recall that a consecutive sequence of length k in a permutation is an occurrence of
+     * (..., i, ..., i + k - 1, ...) in the permutation, with k >= 2, and a maximal consecutive
+     * sequence is a consecutive sequence that is not part of a longer consecutive sequence.
+     *
+     * Preconditions:
+     * ==============
+     *
+     * 1. numElements is a javascript integer, and numElements >= 1
+     *
+     * 2. minLength is a javascript integer, and minLength >= 2
+     */
+    this.numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo = function(
+        numElements,
+        minLength
+    )
+    {
+        var acceptMcsSpecification = function(
+            mcsSpecificationByLengthsAndCounts
+        )
+        {
+            return true;
+        };
+
+        return factorialExt(bigInt.one, numElements)
+            .minus(this.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements,
+                this.getNewSelectionCondition(acceptMcsSpecification, undefined, minLength - 1)));
     };
 
     /**

@@ -118,30 +118,6 @@ the `minLength`/`maxLength` optimization.
 
 ***
 
-### `numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo(numElements, minLength)`
-
-Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
-sequence of length greater than or equal to `minLength`. Note that "having at least one maximal consecutive
-sequence of length greater than or equal to minLength" is equivalent to "having at least one consecutive
-sequence of length greater than or equal to minLength." The result type is bigInt.
-
-*PLEASE NOTE: This algorithm is provided mainly as an example of how to write a simple selection
-condition.* It is an example where the  `minLength`/`maxLength` optimization (see the documentation of
-`getNewSelectionCondition`) is not applicable, and therefore, the algorithm will have to look at *all* 
-MCS-specifications by lengths and counts for `numElements`. This goes to show that the `minLength`/`maxLength` 
-optimization is not the end-all be-all of optimizations in this context. For the purpose of this function, 
-it would be much more efficient to restrict the generation of MCS-specifications to those that specifiy lenghts 
-less than `minLength`, and then use that to count the permutations that do *not* have any maximal consecutive 
-sequences of length greater than or equal to `minLength`.
-
-#### Preconditions:
-
- - `numElements` is a js integer, and `numElements` >= 1.
-
- - `minLength` is a js integer, and `minLength` >= 2.
-
-***
-
 ### `numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements, minLength, maxLength)`
 
 Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
@@ -157,6 +133,29 @@ the selection condition for the function `numberOfPermutationsThatMeetCertainMcs
  - `minLength` is a js integer, and `minLength` >= 2.
  
  - `maxLength` is a js integer, and `maxLength` >= `minLength`.
+
+***
+
+### `numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo(numElements, minLength)`
+
+Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
+sequence of length greater than or equal to `minLength`. Note that "having at least one maximal consecutive
+sequence of length greater than or equal to minLength" is equivalent to "having at least one consecutive
+sequence of length greater than or equal to minLength." The result type is bigInt.
+
+This algorithm is provided mainly as an example of how to write a selection
+condition.  Also, this function demonstrates that it may take a little creativity to 
+get the most out of the `minLength`/`maxLength` optimization that the selection condition offers. 
+A straightforward implementation of this function would not be able to use that optimization. 
+However, if one calculates the number of permutations that do *not* have any maximal consecutive 
+sequences of length greater than or equal to the minimum length and then subtracts that from the 
+number of all permutations, then the optimization can be applied.
+
+#### Preconditions:
+
+ - `numElements` is a js integer, and `numElements` >= 1.
+
+ - `minLength` is a js integer, and `minLength` >= 2.
 
 ***
 
