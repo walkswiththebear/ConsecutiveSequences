@@ -19,12 +19,28 @@ without certain configurations of consecutive sequences.
 
 ### Algorithms
 
+#### `numberOfPermutations(numElements)`
+     
+Returns the number of permutations of `numElements`, that is, `numElements!`. This function is provided
+here because it is sometimes more efficient to calculate the size of the complement of a set of
+permutations that one is interested in than to calculate the size of that set directly. The function
+
+`numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo`
+
+below is an example.
+    
+##### Precondition
+ - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
+`numElements` >= 1.
+
+***
+
 #### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
 
 Returns the number of permutations of `numElements` elements that have no consecutive sequences.
 The result type is bigInt. 
 
-This is based on the 
+The implementation is based on the 
 <a href="https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order" target="_blank">recurrence relation given by Jed Yang on Quora</a>. 
 Since the recursive formula for calculating the result for n elements refers to the value for 
 n&minus;1 and n&minus;2 elements, a straightforward implementation is exponential in n. This 

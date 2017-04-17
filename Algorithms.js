@@ -45,7 +45,7 @@ algorithms = new function()
      * here because it is sometimes more efficient to calculate the size of the complement of a set of
      * permutations that one is interested in than to calculate the size of that set directly. The function
      *
-     *
+     * numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo
      *
      * below is an example.
      *
