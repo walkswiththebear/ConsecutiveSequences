@@ -510,9 +510,9 @@ algorithms = new function()
      *
      * 1. numElements is a javascript integer, and numElements >= 1
      *
-     * 2. length is a javascript integer, and minLength >= 2
+     * 2. length is a javascript integer, and length >= 2
      */
-    this.numberOfPermutationsWithAtLeastOneConsecutiveSequenceOfLengthEqualTo = function(
+    this.numberOfPermutationsWithAtLeastOneConsecutiveSequenceOfLength = function(
         numElements,
         length
     )
@@ -706,6 +706,7 @@ module.exports = {
     getNewSelectionCondition : algorithms.getNewSelectionCondition,
     numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo : algorithms.numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo,
     numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange : algorithms.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange,
+    numberOfPermutationsWithAtLeastOneConsecutiveSequenceOfLength : algorithms.numberOfPermutationsWithAtLeastOneConsecutiveSequenceOfLength,
     numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength : algorithms.numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength,
     numberOfPermutationsByConsecutivePairCount : algorithms.numberOfPermutationsByConsecutivePairCount
 };

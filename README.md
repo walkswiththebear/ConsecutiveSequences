@@ -158,9 +158,7 @@ the selection condition for the function `numberOfPermutationsThatMeetCertainMcs
 #### `numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo(numElements, minLength)`
 
 Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
-sequence of length greater than or equal to `minLength`. Note that "having at least one maximal consecutive
-sequence of length greater than or equal to minLength" is equivalent to "having at least one consecutive
-sequence of length greater than or equal to minLength." The result type is bigInt.
+sequence of length greater than or equal to `minLength`. The result type is bigInt.
 
 This algorithm is provided mainly as an example of how to write a selection
 condition.  Also, this function demonstrates that it may take a little creativity to 
@@ -175,6 +173,49 @@ number of all permutations, then the optimization can be applied.
  - `numElements` is a js integer, and `numElements` >= 1.
 
  - `minLength` is a js integer, and `minLength` >= 2.
+
+***
+
+#### `numberOfPermutationsWithAtLeastOneConsecutiveSequenceOfLength(numElements, length)`
+
+Returns the number of permutations of `numElements` elements that have at least one consecutive
+sequence of length equal to `length`. The result type is bigInt.
+
+This algorithm is provided mainly as an example of how to use the algorithms that deal with
+the number of permutations with certain configurations of maximal consecutive sequences to 
+answer questions about the number of permutations with certain configurations of consecutive 
+sequences. In this case, it is as simple as calling the function
+
+`numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo`
+
+That's because for a permutation to have a consecutive sequence of some length is equivalent
+to having a maximal consecutive sequence greater than or equal to that length.
+
+##### Preconditions:
+
+ - `numElements` is a js integer, and `numElements` >= 1.
+
+ - `length` is a js integer, and `length` >= 2.
+
+***
+
+#### `numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength(numElements, length, count)`
+
+Returns the number of permutations of `numElements` elements that have `count` many consecutive
+sequences of length equal to `length`.
+
+This algorithm is provided mainly as an example of how to use the algorithms that deal with
+the number of permutations with certain configurations of maximal consecutive sequences to 
+answer questions about the number of permutations with certain configurations of consecutive 
+sequences.
+
+##### Preconditions:
+
+ - `numElements` is a js integer, and `numElements` >= 1.
+
+ - `length` is a js integer, and `length` >= 2.
+
+ - `count` is a js integer, and `count` >= 0.
 
 ***
 
