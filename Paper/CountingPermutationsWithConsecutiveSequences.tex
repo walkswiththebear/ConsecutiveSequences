@@ -124,14 +124,18 @@ counting permutations whose maximal consecutive sequences are described in certa
 for these algorithms, which are available under the MIT license \cite{Algos}, arose from the author's curiosity
 about the behavior of random shuffle mode on today's music players \cite{BlogPost}. The algorithms do not
 use the (more generally applicable) inclusion-exclusion principle that is often employed for counting
-permutations with certain properties. Instead, it relies on a technique of reducing the problem of counting
+permutations with certain properties. Instead, they rely on a technique of reducing the problem of counting
 permutations with consecutive sequences to the problem of counting permutations with no consecutive sequences
 at all. This technique is a generalized form of an argument that the author encountered in a Quora post by Jed Yang
 \cite{JedYang}.
 
+Our core algorithms deal with the number of permutations having certain configurations of
+     {\it maximal} consecutive sequences. However, as we will show, they can be employed to answer questions
+     regarding just consecutive sequences as well.
+
 The organization of the paper is as follows. In Theorem \ref{theorem_count_by_length_and_initial_element},
 we give an auxiliary algorithm on which the
-two main algorithms are based. It calculates the number of permutations that satisfy a specification of
+two main algorithms are based. It calculates the number of permutations that meet a specification of
 maximal consecutive sequences by initial elements and lengths.
 
 Theorem \ref{theorem_count_by_length_and_count}
@@ -152,6 +156,9 @@ consecutive sequences. When the algorithm iterates over {\it all} possible speci
 consecutive sequences by length and count, its complexity is only marginally better than a brute force
 solution to the problem. However, our implementation provides custumizability that can lead to vastly
 improved complexity in many cases, such as the example that we just mentioned.
+
+Finally, the last section of this paper discusses how to use our core algorithms, which deal with
+maximal consecutive sequences, to answer questions regarding just plain consecutive sequences.
 
 \section{Specifying Maximal Consecutive Sequences by Lengths And Initial Elements}
 
@@ -537,11 +544,47 @@ to only generate those MCS-specifications by lengths and counts that specify a z
 greater than 2. This cuts the length of the sum in (3) above down to $\lfloor\frac{n}{2}\rfloor + 1$. 
 
 Sometimes, it takes a bit of creativity to avoid the worst-case complexity of $\frac{n^n}{n!}$. Suppose,
-for example, that you wish to calculate the number of permutations that have at least one consecutive
-sequence of length greater than or equal to $u$ for some $u$.
+for example, that you wish to calculate the number of permutations that have at least one maximal consecutive
+sequence of length greater than or equal to $k$ for some $k$.
 As it stands, this condition does not allow you to use the lower bound/upper bound optimization.
 But you could also calculate the number of permutations that have no maximal consecutive sequences
-greater than or equal to $u$ and then subtract that from $n!$.
+greater than or equal to $u$ and then subtract that from $n!$. Now the optimization is applicable.
+
+\section{Permutations with Consecutive Sequences}
+The algorithm we have discussed so far deal with the number of permutations having certain configurations
+of maximal consecutive sequences. Oftentimes, one is interested in the number of permutations having certain
+kinds of---not necessarily maximal---consecutive sequences. Adapting our algorithms for that purpose is
+rather straightforward, and in some cases trivial. For a trivial case, consider the question, ``How many
+permutations are there in ${\mathcal P}_n$ that have consecutive sequences of length $k$?'' Having a
+consecutive sequence of length $k$ is obviously equivalent to having a maximal consecutive sequence of
+length greater than or equal to $k$. This is the application of Theorem
+\ref{theorem_iterating_over_specs_by_count_by_length_and_count} that we mentioned at the end of the
+previous section.
+
+Perhaps the most commonly asked question about consecutive sequences is, ``How many
+permutations are there in ${\mathcal P}_n$ that have $c$ many consecutive sequences of length $k$?''
+To use our algorithms for answering this question, we need the following lemma whose proof is trivial.
+
+\begin{lemma}
+  Let $n \geq 1$, let $T = \{\,(k_1, c_1), (k_2, c_2), \ldots,(k_m, c_m)\,\}$ be an
+  MCS-specification by lengths and counts for $n$. Furthermore, let $p\in {\mathcal R}_(n, T)$,
+  that is, $p$ is a permutation that meets the specification $T$, and let $k \geq 2$.
+  Then the number of consecutive
+  sequences of length $k$ in $p$ equals
+  $$
+  \sum_{\shortstack{$\scriptstyle i=1$\\$\scriptstyle k_i\geq k$}}^{m}c_i\cdot (k_i - k + 1)\,.
+  $$
+\end{lemma}
+
+It is now a straightforward task to count the permutations that have exactly $c$ consecutive sequences
+of length $k$: apply Theorem \ref{theorem_iterating_over_specs_by_count_by_length_and_count} with a
+selection function that employs the lemma above to accept exactly those MCS-specifications by lengths
+and counts that result in $c$ consecutive sequences. Note also that the upper bound optimization that
+we mentioned following Theorem \ref{theorem_iterating_over_specs_by_count_by_length_and_count} is
+applicable here. That's because we know that any MCS-specification by lengths and count that specifies
+a non-zero count for a length $l$ with $l > k + c - 1$ will be rejected. Therefore, we only need to
+look at MCS-specification by lengths and count that specify a zero count for lengths greater than
+$k + c - 1$. Our algorithm package on github \cite{Algos} has a ready-to-use implementation.
 
 \bibliographystyle{alpha}
 \begin{thebibliography}{0}
