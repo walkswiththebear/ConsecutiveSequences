@@ -24,7 +24,9 @@ consecutive sequences in general.
 
 #### `numberOfPermutations(numElements)`
      
-Returns the number of permutations of `numElements`, that is, `numElements!`. This function is provided
+Returns the number of permutations of `numElements`, that is, `numElements!`. The return type is bigInt.
+
+This function is provided
 here because it is sometimes more efficient to calculate the size of the complement of a set of
 permutations that one is interested in than to calculate the size of that set directly. The function
 
