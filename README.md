@@ -11,7 +11,10 @@ form (i, i+1, ..., i+k-1). A **maximal consecutive sequence** is a consecutive s
 that is not part of a longer consecutive sequence.
  
 ConsecutiveSequences.js contains various algorithms for counting permutations with and 
-without certain configurations of consecutive sequences.
+without certain configurations of consecutive sequences. The immediate concern of the
+core algorithms is with maximal consecutive sequences. However, we also give some algorithms
+that demonstrate how the core algorithms can be employed to answer questions about 
+consecutive sequences in general. 
 
 ## Usage
 
