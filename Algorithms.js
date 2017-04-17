@@ -51,7 +51,7 @@ algorithms = new function()
      * implement a bottom-up version that uses constant space and linear time.
      *
      * Precondition
-     * =============
+     * ============
      * numElements is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
      * numElements >= 1
      */
@@ -346,9 +346,10 @@ algorithms = new function()
      * selectionCondition.acceptMcsSpecification(spec);
      *
      * for every MCS-specification by lengths and counts. Here, spec is an array whose entry at index i is
-     * the number of maximal consecutive sequences of length i. (The entries at i=0 and i=1 are always 0.)
-     * If the client-supplied function acceptMcsSpecification returns true on such a specification, the
-     * permutations that meet that specification will be accepted for the count; otherwise, they won't be.
+     * the number of maximal consecutive sequences of length i. (The elements of the array are bigInts, and
+     * the entries at i=0 and i=1 are always 0.) If the client-supplied function acceptMcsSpecification returns
+     * true on such a specification, the permutations that meet that specification will be accepted for the
+     * count; otherwise, they won't be.
      *
      * There is one optimization that may allow the client to cut down on the number of MCS-specifications by
      * lengths and counts that need to be looked at. If you pass an integer minLength as the second argument to
@@ -444,7 +445,7 @@ algorithms = new function()
     };
 
     /**
-     * Algorithm for the Number of Permutations with at least One Maximal Consecutive Sequence Longer than
+     * Algorithm for the Number of Permutations with at Least One Maximal Consecutive Sequence Longer than
      * ===================================================================================================
      *
      * Returns the number of permutations of numElements elements that have at least one maximal consecutive
@@ -484,6 +485,105 @@ algorithms = new function()
         return factorialExt(bigInt.one, numElements)
             .minus(this.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements,
                 this.getNewSelectionCondition(acceptMcsSpecification, undefined, minLength - 1)));
+    };
+
+    /**
+     * Algorithm for the Number of Permutations with Consecutive Sequence(s) of a Given Length
+     * =======================================================================================
+     *
+     * Returns the number of permutations of numElements elements that have at least one consecutive
+     * sequence of a specified length.
+     *
+     * This algorithm is provided mainly as an example of how to use the algorithms for counting permutations
+     * with certain configurations of maximal consecutive sequences for counting the number of permutations
+     * with certain configurations of consecutive sequences. In this case, it is as simple as calling the
+     * function
+     *
+     * numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo
+     *
+     * Recall that a consecutive sequence of length k in a permutation is an occurrence of
+     * (..., i, ..., i + k - 1, ...) in the permutation, with k >= 2, and a maximal consecutive
+     * sequence is a consecutive sequence that is not part of a longer consecutive sequence.
+     *
+     * Preconditions:
+     * ==============
+     *
+     * 1. numElements is a javascript integer, and numElements >= 1
+     *
+     * 2. length is a javascript integer, and minLength >= 2
+     */
+    this.numberOfPermutationsWithAtLeastOneConsecutiveSequenceOfLengthEqualTo = function(
+        numElements,
+        length
+    )
+    {
+        return this.numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo(
+            numElements, length);
+    };
+
+    /**
+     * Algorithm for the Number of Permutations with a Given Number of Consecutive Sequences of a Given Length
+     * =======================================================================================================
+     *
+     * Returns the number of permutations of numElements elements that have a specified number of consecutive
+     * sequences of a specified length.
+     *
+     * This algorithm is provided mainly as an example of how to use the algorithms for counting permutations
+     * with certain configurations of maximal consecutive sequences for counting the number of permutations
+     * with certain configurations of consecutive sequences.
+     *
+     * Recall that a consecutive sequence of length k in a permutation is an occurrence of
+     * (..., i, ..., i + k - 1, ...) in the permutation, with k >= 2, and a maximal consecutive
+     * sequence is a consecutive sequence that is not part of a longer consecutive sequence.
+     *
+     * Preconditions:
+     * ==============
+     *
+     * 1. numElements is a javascript integer, and numElements >= 1
+     *
+     * 2. length is a javascript integer, and length >= 2
+     *
+     * 3. count is a javascript integer, and count >= 0
+     */
+    this.numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength = function(
+        numElements,
+        length,
+        count
+    )
+    {
+        var maxLength = length + count - 1;
+
+        var acceptMcsSpecification = function(
+            mcsSpecificationByLengthsAndCounts
+        )
+        {
+            var bigZero = bigInt.zero;
+            var bigOne = bigInt.one;
+            var bigCount = bigInt(count);
+            var bigLengthMinusOne = bigInt(length).minus(bigOne);
+            var i;
+            var countForThisMcsSpecification = bigZero;
+
+            for(i = length; i <= maxLength; ++i)
+            {
+                countForThisMcsSpecification =
+                    countForThisMcsSpecification.plus(mcsSpecificationByLengthsAndCounts[i].minus(bigLengthMinusOne));
+                if(countForThisMcsSpecification.gt(bigCount))
+                {
+                    return false;
+                }
+            }
+
+            if(countForThisMcsSpecification.eq(bigCount))
+            {
+                return true;
+            }
+
+            return false;
+        };
+
+        return this.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements,
+            this.getNewSelectionCondition(acceptMcsSpecification, length, maxLength));
     };
 
     /**

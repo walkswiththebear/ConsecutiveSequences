@@ -103,9 +103,10 @@ the function `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCo
 `selectionCondition.acceptMcsSpecification(spec);`
 
 for every MCS-specification by lengths and counts. Here, `spec` is an array whose entry at index i is
-the number of maximal consecutive sequences of length i. (The entries at i=0 and i=1 are always 0.) 
-If the client-supplied function `acceptMcsSpecification` returns true on such a specification, the 
-permutations that meet that specification will be accepted for the count; otherwise, they won't be.
+the number of maximal consecutive sequences of length i. The elements of the array are bigInts, and
+the entries at i=0 and i=1 are always 0. If the client-supplied function `acceptMcsSpecification` 
+returns true on such a specification, the permutations that meet that specification will be accepted 
+for the count; otherwise, they won't be.
 
 There is one optimization that may allow the client to cut down on the number of MCS-specifications by
 lengths and counts that need to be looked at. If you pass an integer `minLength` as the second argument to
@@ -139,7 +140,7 @@ and how to use the `minLength`/`maxLength` optimization.
 #### `numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements, minLength, maxLength)`
 
 Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
-sequence within a specified length range, but none of any length outside that range.
+sequence within a specified length range, but none of any length outside that range. The result type is bigInt.
 
 This algorithm is provided mainly as an example of how to use the `minLength`/`maxLength` feature of
 the selection condition for the function `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts`.
