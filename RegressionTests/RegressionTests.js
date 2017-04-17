@@ -24,7 +24,7 @@ var numberOfPermutationsModule = require("../Algorithms.js");
 var bruteForceModule = require("./BruteForceCheck.js");
 var bigInt = require("../3rdParty/BigInteger.js");
 
-var maxNumElementsForPermutationTests = 15;
+var maxNumElementsForPermutationTests = 150;
 var maxNumElementsForBruteForceChecks = 11;
 var i, j, k;
 
@@ -34,113 +34,259 @@ var bruteForceValue;
 // Begin Main Test Body
 //=====================
 //
+/*
+ // Test the bottom-up implementation of Jed Yang's algorithm.
+ //
+ console.log("\nTesting numberOfPermutationsWithNoConsecutiveSequences...");
+ console.log("Jed Yang Algorithm/Brute Force");
+ for(i = 1; i <= maxNumElementsForPermutationTests; ++i)
+ {
+ var numPermutations = numberOfPermutationsModule.numberOfPermutationsWithNoConsecutiveSequences(i);
+ bruteForceValue = "too big for brute force";
+ if(i <= maxNumElementsForBruteForceChecks)
+ {
+ bruteForceValue = bruteForceModule.functions.numberOfPermutationsWithNoConsecutiveSequences(i);
+ if(bruteForceValue != numPermutations)
+ {
+ console.log("Brute force check failed:");
+ }
+ }
 
-// Test the bottom-up implementation of Jed Yang's algorithm.
-//
-console.log("\nTesting numberOfPermutationsWithNoConsecutiveSequences...");
-console.log("Jed Yang Algorithm/Brute Force");
-for(i = 1; i <= maxNumElementsForPermutationTests; ++i)
-{
-    var numPermutations = numberOfPermutationsModule.numberOfPermutationsWithNoConsecutiveSequences(i);
-    bruteForceValue = "too big for brute force";
-    if(i <= maxNumElementsForBruteForceChecks)
-    {
-        bruteForceValue = bruteForceModule.functions.numberOfPermutationsWithNoConsecutiveSequences(i);
-        if(bruteForceValue != numPermutations)
-        {
-            console.log("Brute force check failed:");
-        }
-    }
+ console.log(numPermutations.toString() + "/" + bruteForceValue);
+ }
 
-    console.log(numPermutations.toString() + "/" + bruteForceValue);
-}
+ console.log("...done\n");
 
-console.log("...done\n");
+ console.log("-----------------------------------\n");
 
-console.log("-----------------------------------\n");
+ // --------------------------------------------------------------------------------------------------------------------
 
+ // Test number of permutations by consecutive pair count.
+ //
+ console.log("Testing numberOfPermutationsByLinkCount...");
+ console.log("First Line: Algorithm, Second Line: Brute Force");
+ for(i = 1; i <= maxNumElementsForPermutationTests; ++i)
+ {
+ algorithmValue = numberOfPermutationsModule.numberOfPermutationsByConsecutivePairCount(i);
+ console.log(algorithmValue.toString());
+ if(i <= maxNumElementsForBruteForceChecks)
+ {
+ bruteForceValue = bruteForceModule.functions.numberOfPermutationsByConsecutivePairCount(i);
+ if(!algorithmValue.some(function(
+ elem,
+ index
+ )
+ {
+ return !elem.eq(bruteForceValue[index]);
+ }))
+ {
+ console.log(bruteForceValue + "\n");
+ }
+ else
+ {
+ console.log("brute force check failed!");
+ }
+ }
+ else
+ {
+ console.log("too big for brute force\n");
+ }
+ }
+ console.log("...done\n");
+
+ console.log("-----------------------------------\n");
+
+ // --------------------------------------------------------------------------------------------------------------------
+
+ // Test number of permutations that meet an MCS-specification by lengths and counts.
+ //
+ console.log("Testing numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts...");
+ console.log("\nCalculating the number of permutations with a given number of consecutive pairs by adding\n" +
+ "up the number of permutations with the right number of maximal consecutive sequences, then\n" +
+ "checking against numberOfPermutationsByConsecutivePairsCount.");
+ console.log("\n\"x\" means \"check against numberOfPermutationsByConsecutivePairsCount passed.\"\n");
+ for(i = 1; i <= maxNumElementsForPermutationTests; ++i)
+ {
+ numConsecutivePairsByExactNumberOfConsecutiveSequences(i);
+ console.log("")
+ }
+ console.log("...done\n");
+
+ console.log("-----------------------------------\n");
+
+ // --------------------------------------------------------------------------------------------------------------------
+
+ // Test number of permutations with maximal consecutive sequences only in a specified length range. This is really
+ // about testing our core algorithm numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
+ //
+ console.log("Testing numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange...");
+
+ console.log("(i, j, k, c) means: there are c permutations of i elements with at least one maximal\n" +
+ "consecutive sequence of length >=j and <=k, but none outside of that range.\n");
+ console.log("\"x\" means \"check against brute force passed.\"\n");
+
+ for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
+ {
+ for(j = 2; j <= i; ++j)
+ {
+ for(k = j; k <= i; ++k)
+ {
+ algorithmValue =
+ numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(i, j,
+ k);
+
+ if(i <= maxNumElementsForBruteForceChecks)
+ {
+ bruteForceValue =
+ bruteForceModule.functions.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(i,
+ j, k);
+
+ if(algorithmValue.eq(bruteForceValue))
+ {
+ console.log("(" + i + ", " + j + ", " + k + ", " + algorithmValue.toString() + ") x");
+ }
+ else
+ {
+ console.log("(" + i + ", " + j + ", " + k + ", " + algorithmValue.toString() +
+ ") brute force check failed: " + bruteForceValue.toString());
+ }
+ }
+ else
+ {
+ console.log(
+ "(" + i + ", " + j + ", " + k + ", " + algorithmValue.toString() + ") too big for brute force");
+ }
+ }
+ }
+ }
+ console.log("...done\n");
+
+ console.log("-----------------------------------\n");
+
+ // --------------------------------------------------------------------------------------------------------------------
+
+ // Test number of permutations with at least one maximal consecutive sequence, but none of length greater
+ // than a specified limit.  This is really about testing our core algorithm
+ // numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
+ //
+ var numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength = function(
+ numElements,
+ maxConsecutiveSequenceLength
+ )
+ {
+ return numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements,
+ 2, maxConsecutiveSequenceLength);
+
+ };
+
+ console.log("Testing numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength...");
+
+ console.log("(i, j, c) means: there are c permutations of i elements with at least one maximal\n" +
+ "consecutive sequence of length <=j but none of length greater than j.\n");
+ console.log("\"x\" means \"check against brute force passed.\"\n");
+
+ for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
+ {
+ for(j = 2; j <= i; ++j)
+ {
+ var algorithmValue = numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength(i, j);
+
+ if(i <= maxNumElementsForBruteForceChecks)
+ {
+ bruteForceValue =
+ bruteForceModule.functions.numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength(i, j);
+ if(algorithmValue.eq(bruteForceValue))
+ {
+ console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") x");
+ }
+ else
+ {
+ console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") brute force check failed: " +
+ bruteForceValue.toString());
+ }
+ }
+ else
+ {
+ console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") too big for brute force");
+ }
+ }
+
+ }
+
+ console.log("...done\n");
+
+ console.log("-----------------------------------\n");
+
+ // --------------------------------------------------------------------------------------------------------------------
+
+ // Test number of permutations with at least one maximal consecutive sequence, but none of length less
+ // than a specified limit. This is really about testing our core algorithm
+ // numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
+ //
+ var numberOfPermutationsWithConsecutiveSequencesOnlyFromSomeLengthUp = function(
+ numElements,
+ minLengthOfMaximalConsecutiveSequence
+ )
+ {
+ return numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements,
+ minLengthOfMaximalConsecutiveSequence, numElements);
+
+ };
+ console.log("Testing numberOfPermutationsWithUnbrokenSequencesOnlyFromSomeLengthUp...");
+
+ console.log("(i, j, c) means: there are c permutations of i elements with at least one maximal\n" +
+ "unbroken sequence of length >=j but none of length less than j.\n");
+ console.log("\"x\" means \"check against brute force passed.\"\n");
+
+ for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
+ {
+ for(j = 2; j <= i; ++j)
+ {
+ algorithmValue = numberOfPermutationsWithConsecutiveSequencesOnlyFromSomeLengthUp(i, j);
+
+ if(i <= maxNumElementsForBruteForceChecks)
+ {
+ bruteForceValue =
+ bruteForceModule.functions.numberOfPermutationsWithConsecutiveSequencesOnlyFromSomeLengthUp(i, j);
+ if(algorithmValue.eq(bruteForceValue))
+ {
+ console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") x");
+ }
+ else
+ {
+ console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") brute force check failed: " +
+ bruteForceValue.toString());
+ }
+ }
+ else
+ {
+ console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") too big for brute force");
+ }
+ }
+ }
+ */
 // --------------------------------------------------------------------------------------------------------------------
 
-// Test number of permutations by consecutive pair count.
+// Test number of permutations with a given number of consecutive sequences of a given length.
 //
-console.log("Testing numberOfPermutationsByLinkCount...");
-console.log("First Line: Algorithm, Second Line: Brute Force");
-for(i = 1; i <= maxNumElementsForPermutationTests; ++i)
-{
-    algorithmValue = numberOfPermutationsModule.numberOfPermutationsByConsecutivePairCount(i);
-    console.log(algorithmValue.toString());
-    if(i <= maxNumElementsForBruteForceChecks)
-    {
-        bruteForceValue = bruteForceModule.functions.numberOfPermutationsByConsecutivePairCount(i);
-        if(!algorithmValue.some(function(
-                elem,
-                index
-            )
-            {
-                return !elem.eq(bruteForceValue[index]);
-            }))
-        {
-            console.log(bruteForceValue + "\n");
-        }
-        else
-        {
-            console.log("brute force check failed!");
-        }
-    }
-    else
-    {
-        console.log("too big for brute force\n");
-    }
-}
-console.log("...done\n");
+console.log("Testing numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength...");
 
-console.log("-----------------------------------\n");
-
-// --------------------------------------------------------------------------------------------------------------------
-
-// Test number of permutations that meet an MCS-specification by lengths and counts.
-//
-console.log("Testing numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts...");
-console.log("\nCalculating the number of permutations with a given number of consecutive pairs by adding\n" +
-            "up the number of permutations with the right number of maximal consecutive sequences, then\n" +
-            "checking against numberOfPermutationsByConsecutivePairsCount.");
-console.log("\n\"x\" means \"check against numberOfPermutationsByConsecutivePairsCount passed.\"\n");
-for(i = 1; i <= maxNumElementsForPermutationTests; ++i)
-{
-    numConsecutivePairsByExactNumberOfConsecutiveSequences(i);
-    console.log("")
-}
-console.log("...done\n");
-
-console.log("-----------------------------------\n");
-
-// --------------------------------------------------------------------------------------------------------------------
-
-// Test number of permutations with maximal consecutive sequences only in a specified length range. This is really
-// about testing our core algorithm numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
-//
-console.log("Testing numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange...");
-
-console.log("(i, j, k, c) means: there are c permutations of i elements with at least one maximal\n" +
-            "consecutive sequence of length >=j and <=k, but none outside of that range.\n");
+console.log("(i, j, k, c) means: there are c permutations of i elements with k\n" + "unbroken sequence of length j.\n");
 console.log("\"x\" means \"check against brute force passed.\"\n");
 
 for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
 {
     for(j = 2; j <= i; ++j)
     {
-        for(k = j; k <= i; ++k)
+        for(k = 0; k <= i - j + 2; ++k)
         {
             algorithmValue =
-                numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(i, j,
-                    k);
+                numberOfPermutationsModule.numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength(i, j, k);
 
             if(i <= maxNumElementsForBruteForceChecks)
             {
                 bruteForceValue =
-                    bruteForceModule.functions.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(i,
-                        j, k);
-
+                    bruteForceModule.functions.numPermutationsWithGivenNumberOfConsecutiveSequencesOfLength(i, j, k);
                 if(algorithmValue.eq(bruteForceValue))
                 {
                     console.log("(" + i + ", " + j + ", " + k + ", " + algorithmValue.toString() + ") x");
@@ -159,136 +305,31 @@ for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
         }
     }
 }
-console.log("...done\n");
-
-console.log("-----------------------------------\n");
-
-// --------------------------------------------------------------------------------------------------------------------
-
-// Test number of permutations with at least one maximal consecutive sequence, but none of length greater
-// than a specified limit.  This is really about testing our core algorithm
-// numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
-//
-var numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength = function(
-    numElements,
-    maxConsecutiveSequenceLength
-)
-{
-    return numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements,
-        2, maxConsecutiveSequenceLength);
-
-};
-
-console.log("Testing numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength...");
-
-console.log("(i, j, c) means: there are c permutations of i elements with at least one maximal\n" +
-            "consecutive sequence of length <=j but none of length greater than j.\n");
-console.log("\"x\" means \"check against brute force passed.\"\n");
-
-for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
-{
-    for(j = 2; j <= i; ++j)
-    {
-        var algorithmValue = numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength(i, j);
-
-        if(i <= maxNumElementsForBruteForceChecks)
-        {
-            bruteForceValue =
-                bruteForceModule.functions.numberOfPermutationsWithConsecutiveSequencesOnlyUpToSomeLength(i, j);
-            if(algorithmValue.eq(bruteForceValue))
-            {
-                console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") x");
-            }
-            else
-            {
-                console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") brute force check failed: " +
-                            bruteForceValue.toString());
-            }
-        }
-        else
-        {
-            console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") too big for brute force");
-        }
-    }
-
-}
 
 console.log("...done\n");
 
 console.log("-----------------------------------\n");
+/*
+ // --------------------------------------------------------------------------------------------------------------------
 
-// --------------------------------------------------------------------------------------------------------------------
+ // Probability of hearing x songs in a row in shuffle mode from a playlist of n. This is really about testing our
+ // core algorithm numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
+ //
+ console.log("Testing probability of hearing x songs in a row...");
 
-// Test number of permutations with at least one maximal consecutive sequence, but none of length less
-// than a specified limit. This is really about testing our core algorithm
-// numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
-//
-var numberOfPermutationsWithConsecutiveSequencesOnlyFromSomeLengthUp = function(
-    numElements,
-    minLengthOfMaximalConsecutiveSequence
-)
-{
-    return numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements,
-        minLengthOfMaximalConsecutiveSequence, numElements);
+ console.log(
+ "(i, j, p) means: the probability of hearing i consecutive songs from a playlist of j in shuffle mode is p\n");
+ console.log("\"x\" means \"check against brute force passed.\"\n");
 
-};
-console.log("Testing numberOfPermutationsWithUnbrokenSequencesOnlyFromSomeLengthUp...");
-
-console.log("(i, j, c) means: there are c permutations of i elements with at least one maximal\n" +
-            "unbroken sequence of length >=j but none of length less than j.\n");
-console.log("\"x\" means \"check against brute force passed.\"\n");
-
-for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
-{
-    for(j = 2; j <= i; ++j)
-    {
-        algorithmValue = numberOfPermutationsWithConsecutiveSequencesOnlyFromSomeLengthUp(i, j);
-
-        if(i <= maxNumElementsForBruteForceChecks)
-        {
-            bruteForceValue =
-                bruteForceModule.functions.numberOfPermutationsWithConsecutiveSequencesOnlyFromSomeLengthUp(i, j);
-            if(algorithmValue.eq(bruteForceValue))
-            {
-                console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") x");
-            }
-            else
-            {
-                console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") brute force check failed: " +
-                            bruteForceValue.toString());
-            }
-        }
-        else
-        {
-            console.log("(" + i + ", " + j + ", " + algorithmValue.toString() + ") too big for brute force");
-        }
-    }
-}
-
-console.log("...done\n");
-
-console.log("-----------------------------------\n");
-
-// --------------------------------------------------------------------------------------------------------------------
-
-// Probability of hearing x songs in a row in shuffle mode from a playlist of n. This is really about testing our
-// core algorithm numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts.
-//
-console.log("Testing probability of hearing x songs in a row...");
-
-console.log(
-    "(i, j, p) means: the probability of hearing i consecutive songs from a playlist of j in shuffle mode is p\n");
-console.log("\"x\" means \"check against brute force passed.\"\n");
-
-for(j = 2; j <= maxNumElementsForPermutationTests; ++j)
-{
-    for(i = j; i <= maxNumElementsForPermutationTests; ++i)
-    {
-        probabilityOfXInARow(i, j);
-    }
-    console.log("");
-}
-
+ for(j = 2; j <= maxNumElementsForPermutationTests; ++j)
+ {
+ for(i = j; i <= maxNumElementsForPermutationTests; ++i)
+ {
+ probabilityOfXInARow(i, j);
+ }
+ console.log("");
+ }
+ */
 //
 // End Main Test Body
 //===================

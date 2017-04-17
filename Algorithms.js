@@ -551,7 +551,7 @@ algorithms = new function()
         count
     )
     {
-        var maxLength = length + count - 1;
+        var maxLength = Math.min(length + count - 1, numElements);
 
         var acceptMcsSpecification = function(
             mcsSpecificationByLengthsAndCounts
@@ -566,8 +566,8 @@ algorithms = new function()
 
             for(i = length; i <= maxLength; ++i)
             {
-                countForThisMcsSpecification =
-                    countForThisMcsSpecification.plus(mcsSpecificationByLengthsAndCounts[i].minus(bigLengthMinusOne));
+                countForThisMcsSpecification = countForThisMcsSpecification.plus(
+                    mcsSpecificationByLengthsAndCounts[i].times(i - bigLengthMinusOne));
                 if(countForThisMcsSpecification.gt(bigCount))
                 {
                     return false;
@@ -583,7 +583,7 @@ algorithms = new function()
         };
 
         return this.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements,
-            this.getNewSelectionCondition(acceptMcsSpecification, length, maxLength));
+            this.getNewSelectionCondition(acceptMcsSpecification, undefined, maxLength));
     };
 
     /**
@@ -706,5 +706,6 @@ module.exports = {
     getNewSelectionCondition : algorithms.getNewSelectionCondition,
     numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo : algorithms.numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo,
     numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange : algorithms.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange,
+    numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength : algorithms.numberOfPermutationsWithGivenNumberOfConsecutiveSequencesOfLength,
     numberOfPermutationsByConsecutivePairCount : algorithms.numberOfPermutationsByConsecutivePairCount
 };

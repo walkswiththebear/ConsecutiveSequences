@@ -227,6 +227,22 @@ exports.functions = new function()
         });
     };
 
+    /**
+     * Returns the number of permutations that have a specified number of consecutive sequences
+     * of a specified length.
+     */
+    this.numPermutationsWithGivenNumberOfConsecutiveSequencesOfLength = function(
+        numElements,
+        length,
+        count
+    )
+    {
+        return this.countPermutations(numElements, function(permutation)
+        {
+            return hasGivenNumberOfConsecutiveSequencesOfLength(permutation, length, count);
+        });
+    };
+
     // Functions Used in Instantiations
     // ================================
 
@@ -413,6 +429,49 @@ exports.functions = new function()
             {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns true if the specified permutation has a maximal consecutive sequence of length less than
+     * minLength.
+     */
+    function hasGivenNumberOfConsecutiveSequencesOfLength(
+        permutation,
+        length,
+        count
+    )
+    {
+        var len = permutation.length;
+        var currentConsecutiveSequenceLength = 1;
+        var currentCount = 0;
+        var i;
+
+        for(i = 0; i < len - 1; ++i)
+        {
+            if(permutation[i + 1] == permutation[i] + 1)
+            {
+                ++currentConsecutiveSequenceLength;
+                if(currentConsecutiveSequenceLength >= length)
+                {
+                    ++currentCount;
+                    if(currentCount > count)
+                    {
+                        return false;
+                    }
+                }
+            }
+            else if(currentConsecutiveSequenceLength > 1)
+            {
+                currentConsecutiveSequenceLength = 1;
+            }
+        }
+
+        if(currentCount === count)
+        {
+            return true;
         }
 
         return false;
