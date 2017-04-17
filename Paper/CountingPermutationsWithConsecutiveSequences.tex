@@ -551,13 +551,13 @@ But you could also calculate the number of permutations that have no maximal con
 greater than or equal to $u$ and then subtract that from $n!$. Now the optimization is applicable.
 
 \section{Permutations with Consecutive Sequences}
-The algorithm we have discussed so far deal with the number of permutations having certain configurations
+The algorithms we have discussed so far deal with the number of permutations having certain configurations
 of maximal consecutive sequences. Oftentimes, one is interested in the number of permutations having certain
 kinds of---not necessarily maximal---consecutive sequences. Adapting our algorithms for that purpose is
 rather straightforward, and in some cases trivial. For a trivial case, consider the question, ``How many
 permutations are there in ${\mathcal P}_n$ that have consecutive sequences of length $k$?'' Having a
 consecutive sequence of length $k$ is obviously equivalent to having a maximal consecutive sequence of
-length greater than or equal to $k$. This is the application of Theorem
+length greater than or equal to $k$. Therefore, this is the application of Theorem
 \ref{theorem_iterating_over_specs_by_count_by_length_and_count} that we mentioned at the end of the
 previous section.
 
@@ -567,7 +567,7 @@ To use our algorithms for answering this question, we need the following lemma w
 
 \begin{lemma}
   Let $n \geq 1$, let $T = \{\,(k_1, c_1), (k_2, c_2), \ldots,(k_m, c_m)\,\}$ be an
-  MCS-specification by lengths and counts for $n$. Furthermore, let $p\in {\mathcal R}_(n, T)$,
+  MCS-specification by lengths and counts for $n$. Furthermore, let $p\in {\mathcal R}_{(n,T)}$,
   that is, $p$ is a permutation that meets the specification $T$, and let $k \geq 2$.
   Then the number of consecutive
   sequences of length $k$ in $p$ equals
@@ -583,7 +583,7 @@ and counts that result in $c$ consecutive sequences. Note also that the upper bo
 we mentioned following Theorem \ref{theorem_iterating_over_specs_by_count_by_length_and_count} is
 applicable here. That's because we know that any MCS-specification by lengths and count that specifies
 a non-zero count for a length $l$ with $l > k + c - 1$ will be rejected. Therefore, we only need to
-look at MCS-specification by lengths and count that specify a zero count for lengths greater than
+look at MCS-specifications by lengths and counts that specify a zero count for lengths greater than
 $k + c - 1$. Our algorithm package on github \cite{Algos} has a ready-to-use implementation.
 
 \bibliographystyle{alpha}
