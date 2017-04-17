@@ -38,6 +38,28 @@ algorithms = new function()
     // ================
 
     /**
+     * Number Of Permutations
+     * ======================
+     *
+     * Returns the number of permutations of numElements, that is, numElements!. This function is provided
+     * here because it is sometimes more efficient to calculate the size of the complement of a set of
+     * permutations that one is interested in than to calculate the size of that set directly. The function
+     *
+     *
+     *
+     * below is an example.
+     *
+     * Precondition
+     * ============
+     * numElements is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
+     * numElements >= 1
+     */
+    this.numberOfPermutations = function(numElementsIn)
+    {
+        return this.factorialExt(bigInt(2), numElements)
+    }
+
+    /**
      * Algorithm for the Number Of Permutations with no Consecutive Sequences
      * ======================================================================
      *
@@ -700,6 +722,7 @@ algorithms = new function()
 }();
 
 module.exports = {
+    numberOfPermutations : algorithms.numberOfPermutations,
     numberOfPermutationsWithNoConsecutiveSequences : algorithms.numberOfPermutationsWithNoConsecutiveSequences,
     numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts : algorithms.numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts,
     numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts : algorithms.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts,

@@ -507,7 +507,7 @@ function probabilityOfXInARow(
     x
 )
 {
-    var numPermutations = factorial(bigInt(numElements));
+    var numPermutations = numberOfPermutationsModule.numberOfPermutations(numElements);
 
     var numPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualToX = //
         numberOfPermutationsModule.numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo(
@@ -560,17 +560,5 @@ function probabilityOfXInARow(
         {
             console.log("(" + x + ", " + numElements + ", " + probability + ") too big for brute force");
         }
-    }
-}
-
-function factorial(n)
-{
-    if(n.eq(bigInt.one))
-    {
-        return bigInt.one;
-    }
-    else
-    {
-        return n.times(factorial(n.minus(bigInt.one)));
     }
 }
