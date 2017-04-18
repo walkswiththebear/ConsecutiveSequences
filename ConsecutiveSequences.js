@@ -32,7 +32,7 @@
  */
 algorithms = new function()
 {
-    var bigInt = require("./3rdParty/BigInteger.js");
+    var bigInt = require("BigInteger.js");
 
     // Module Interface
     // ================
@@ -54,9 +54,9 @@ algorithms = new function()
      * numElements is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
      * numElements >= 1
      */
-    this.numberOfPermutations = function(numElementsIn)
+    this.numberOfPermutations = function(numElements)
     {
-        return this.factorialExt(bigInt(2), numElements)
+        return factorialExt(bigInt(2), numElements)
     }
 
     /**
