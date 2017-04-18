@@ -22,7 +22,7 @@
 
 exports.functions = new function()
 {
-    var numberOfPermutationsModule = require("../Algorithms.js");
+    var numberOfPermutationsModule = require("../ConsecutiveSequences.js");
 
     // Generic Algorithms
     // ==================

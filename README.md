@@ -19,6 +19,22 @@ consecutive sequences in general.
 ## Usage
 
 ### Installation
+You can download [ConsecutiveSequences.min.js from GitHub](http://walkswiththebear.github.io/ConsecutiveSequences/ConsecutiveSequences.min.js). If you are using a browser, you can also hotlink to it:
+
+    <script src="http://walkswiththebear.github.io/ConsecutiveSequences/ConsecutiveSequences.min.js"></script>
+
+If you are using node, place ConsecutiveSequences.min.js in a directory where nodejs will find it, and include
+it in your code:
+
+    var consecutiveSequencesModule = require("ConsecutiveSequences.min.js");
+
+Consecutive Sequences has one dependency, namely, 
+[Peter Olson's BigInteger.js](https://github.com/peterolson/BigInteger.js). You can download the version that
+I last used with my regression tests from [here](http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js), or hotlink to it like this:
+
+    <script src="http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js"></script>
+
+You may of course want to get the latest version from [Peter Olson's github repository](https://github.com/peterolson/BigInteger.js). 
 
 ### Algorithms
 

@@ -20,7 +20,7 @@
  SOFTWARE.
  */
 
-var numberOfPermutationsModule = require("../Algorithms.js");
+var numberOfPermutationsModule = require("../ConsecutiveSequences.js");
 var bruteForceModule = require("./BruteForceCheck.js");
 var bigInt = require("../3rdParty/BigInteger.js");
 
