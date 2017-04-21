@@ -16,6 +16,11 @@ without certain configurations of consecutive sequences, centered around a gener
 consecutive sequences. However, we also give some algorithms that demonstrate how the 
 core algorithms can be employed to answer questions about consecutive sequences in general. 
 
+## Mathematics
+The mathematical underpinnings of the algorithms, including correctness proofs, can be found in 
+[this paper](http://walkswiththebear.github.io/ConsecutiveSequences/Paper/CountingPermutationsWithConsecutiveSequences.pdf). The Latex sources are in the subdirectory named Paper
+in this repository.
+
 ## Usage
 
 ### Installation
