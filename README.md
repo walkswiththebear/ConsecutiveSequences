@@ -40,7 +40,7 @@ for ConsecutiveSequences.js are called in a UNIX shell like this:
 
 If you'd rather use the latest version of BigInteger.js. you can hotlink to it like this:
 
-    <script src="http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js"></script>
+    <script src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
 
 or get it from [Peter Olson's github repository](https://github.com/peterolson/BigInteger.js). 
 
