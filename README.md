@@ -32,7 +32,7 @@ Consecutive Sequences has one dependency, namely,  [Peter Olson's BigInteger.js]
 
     <script src="http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js"></script>
 
-If you are using node, place BigInteger.min.js in a directory where nodesj will find it. For example, in the
+If you are using node, place BigInteger.min.js in a directory where nodejs will find it. For example, in the
 ConsecutiveSequences repository, the file BigInteger.js is in a subdirectory named 3rdParty, and the regression tests
 for ConsecutiveSequences.js are called in a UNIX shell like this:
 
