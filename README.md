@@ -6,15 +6,15 @@ have certain configurations of consecutive sequences.
 ## Overview
 Consider a permutation p of the n natural numbers {1, ..., n}, and let k >= 2. A
 **consecutive sequence** of length k in the permutation is an occurrence of k consecutive
-integers in the permutation, that is, an occurrence of a contiguous subsequence of the
+integers in p, that is, an occurrence of a contiguous subsequence of the
 form (i, i+1, ..., i+k-1). A **maximal consecutive sequence** is a consecutive sequence
 that is not part of a longer consecutive sequence.
  
 ConsecutiveSequences.js contains various algorithms for counting permutations with and 
-without certain configurations of consecutive sequences. The immediate concern of the
-core algorithms is with maximal consecutive sequences. However, we also give some algorithms
-that demonstrate how the core algorithms can be employed to answer questions about 
-consecutive sequences in general. 
+without certain configurations of consecutive sequences, centered around a generic
+"all-purpose" algorithm. The immediate concern of the core algorithms is with maximal 
+consecutive sequences. However, we also give some algorithms that demonstrate how the 
+core algorithms can be employed to answer questions about consecutive sequences in general. 
 
 ## Usage
 
@@ -34,7 +34,7 @@ I last used with my regression tests from [here](http://walkswiththebear.github.
 ConsecutiveSequences repository, the file BigInteger.js is in a subdirectory named 3rdParty, and the regression tests
 for ConsecutiveSequences.js are called in a UNIX shell like this:
 
- NODE_PATH=$NODE_PATH:../3rdParty nodejs RegressionTests.js > test.out
+    NODE_PATH=$NODE_PATH:../3rdParty nodejs RegressionTests.js > test.out
 
 If you'd rather use the latest version of BigInteger.js. you can hotlink to it like this:
 
