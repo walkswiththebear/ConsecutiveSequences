@@ -30,11 +30,17 @@ it in your code:
 
 Consecutive Sequences has one dependency, namely, 
 [Peter Olson's BigInteger.js](https://github.com/peterolson/BigInteger.js). You can download the version that
-I last used with my regression tests from [here](http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js), or hotlink to it like this:
+I last used with my regression tests from [here](http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js). If you are using node, place it in a directory where nodesj will find it. For example, in the
+ConsecutiveSequences repository, the file BigInteger.js is in a subdirectory named 3rdParty, and the regression tests
+for ConsecutiveSequences.js are called in a UNIX shell like this:
+
+ NODE_PATH=$NODE_PATH:../3rdParty nodejs RegressionTests.js > test.out
+
+If you'd rather use the latest version of BigInteger.js. you can hotlink to it like this:
 
     <script src="http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js"></script>
 
-You may of course want to get the latest version from [Peter Olson's github repository](https://github.com/peterolson/BigInteger.js). 
+or get it from [Peter Olson's github repository](https://github.com/peterolson/BigInteger.js). 
 
 ### Algorithms
 
