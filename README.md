@@ -19,7 +19,7 @@ consecutive sequences in general.
 ## Usage
 
 ### Installation
-You can download <a href="http://walkswiththebear.github.io/ConsecutiveSequences/ConsecutiveSequences.min.js" target="_blank">ConsecutiveSequences.min.js from GitHub</a>. If you are using a browser, you can also hotlink to it:
+You can download [ConsecutiveSequences.min.js from GitHub](http://walkswiththebear.github.io/ConsecutiveSequences/ConsecutiveSequences.min.js). If you are using a browser, you can also hotlink to it:
 
     <script src="http://walkswiththebear.github.io/ConsecutiveSequences/ConsecutiveSequences.min.js"></script>
 
