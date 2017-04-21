@@ -28,9 +28,11 @@ it in your code:
 
     var consecutiveSequencesModule = require("ConsecutiveSequences.min.js");
 
-Consecutive Sequences has one dependency, namely, 
-[Peter Olson's BigInteger.js](https://github.com/peterolson/BigInteger.js). You can download the version that
-I last used with my regression tests from [here](http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js). If you are using node, place it in a directory where nodesj will find it. For example, in the
+Consecutive Sequences has one dependency, namely,  [Peter Olson's BigInteger.js](https://github.com/peterolson/BigInteger.js). You can download the version that I last used with my regression tests from [here](http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js), or hotlink to it like this:
+
+    <script src="http://walkswiththebear.github.io/ConsecutiveSequences/3rdParty/BigInteger.min.js"></script>
+
+If you are using node, place BigInteger.min.js in a directory where nodesj will find it. For example, in the
 ConsecutiveSequences repository, the file BigInteger.js is in a subdirectory named 3rdParty, and the regression tests
 for ConsecutiveSequences.js are called in a UNIX shell like this:
 
