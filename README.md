@@ -187,8 +187,7 @@ and how to use the `minLength`/`maxLength` optimization.
 
  - `noMaximalConsecutiveSequencesOfLengthLessThan` is a js integer, and `noMaximalConsecutiveSequencesOfLengthLessThan` >= 2.
 
- - `noMaximalConsecutiveSequencesOfLengthGreaterThan` is a js integer, and `noMaximalConsecutiveSequencesOfLengthGreaterThan`
-    >= 1.
+ - `noMaximalConsecutiveSequencesOfLengthGreaterThan` is a js integer, and `noMaximalConsecutiveSequencesOfLengthGreaterThan` >= 1.
 
 ***
 
