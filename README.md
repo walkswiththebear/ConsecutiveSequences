@@ -129,8 +129,7 @@ and which ones to reject. The function returns the number of permutations that m
 MCS-specifications. The result type is bigInt. See the documentation of the function `getNewSelectionCondition` 
 for details on how the client-supplied selection condition needs to be written.
 
-The total number of MCS-specifications by lengths and counts is large: it approximately equals 
-`numElements`<sup>`numElements`</sup>` / numElements!`. Therefore, the client-supplied selection
+The total number of MCS-specifications by lengths and counts tends to be large. This function begins to encounter performance problems for values of `numElements` around 100. Therefore, the client-supplied selection
 condition offers ways to cut down on the number of MCS-specifications that this function presents for
 selection. See the documentation of the function `getNewSelectionCondition` for details.
 
