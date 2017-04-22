@@ -41,7 +41,7 @@ If you are using node, place BigInteger.min.js in a directory where nodejs will 
 ConsecutiveSequences repository, the file BigInteger.js is in a subdirectory named 3rdParty, and the regression tests
 for ConsecutiveSequences.js are called in a UNIX shell like this:
 
-    NODE_PATH=$NODE_PATH:../3rdParty nodejs RegressionTests.js > test.out
+    NODE_PATH=$NODE_PATH:../3rdParty:.. nodejs RegressionTests.js > test.out
 
 If you'd rather use the latest version of BigInteger.js. you can hotlink to it like this:
 

@@ -20,9 +20,9 @@
  SOFTWARE.
  */
 
-var numberOfPermutationsModule = require("../ConsecutiveSequences.js");
+var numberOfPermutationsModule = require("ConsecutiveSequences.min.js");
 var bruteForceModule = require("./BruteForceCheck.js");
-var bigInt = require("../3rdParty/BigInteger.js");
+var bigInt = require("BigInteger.js");
 
 var maxNumElementsForPermutationTests = 15;
 var maxNumElementsForBruteForceChecks = 11;
