@@ -13,12 +13,18 @@ ConsecutiveSequences.js contains various algorithms for counting permutations wi
 without certain configurations of consecutive sequences, centered around a generic
 "all-purpose" algorithm. The immediate concern of the core algorithms is with maximal 
 consecutive sequences. However, we also give some algorithms that demonstrate how the 
-core algorithms can be employed to answer questions about consecutive sequences in general. 
+core algorithms can be employed to answer questions about consecutive sequences in general.
+
+This project was motivated by a rather light 
+[blog post](http://blog.greaterthanzero.com/post/159874910652/some-mathematics-algorithms-and-probabilities) 
+on how random shuffle mode is implemented in today's digital music players. 
 
 ## Mathematics
 The mathematical underpinnings of the algorithms, including correctness proofs, can be found in 
-[this paper](http://walkswiththebear.github.io/ConsecutiveSequences/Paper/CountingPermutationsWithConsecutiveSequences.pdf). The Latex sources are in the subdirectory named Paper
-in this repository.
+[this paper](http://walkswiththebear.github.io/ConsecutiveSequences/Paper/CountingPermutationsWithConsecutiveSequences.pdf).
+It is not likely that the paper contains any mathematical results that are not already known to combinatorial
+mathematicians. However, I could not find the results that I needed on the Web. Any feedback
+from people with knowledge and expertise in combinatorial mathematics would be much appreciated.
 
 ## Usage
 
