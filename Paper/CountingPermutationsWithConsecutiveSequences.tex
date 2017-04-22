@@ -6,7 +6,7 @@
 %          -------------------------------------------------------------------------------------------------------------
 %          ----------------------------------------------- Thomas Becker -----------------------------------------------
 %          -------------------------------------------------------------------------------------------------------------
-%          ------------------------------------------------- MAR 2017 --------------------------------------------------
+%          ------------------------------------------------- APR 2017 --------------------------------------------------
 
 \documentclass{article}
 \usepackage{amsfonts}
@@ -73,14 +73,14 @@
 \begin{document}
 \author{Thomas Becker\\ {\small \it thomas@greaterthanzero.com}}
 \title{Some General Purpose Algorithms for Counting Permutations with Consecutive Sequences}
-\date{\small March 13, 2017}
+\date{\small April 22, 2017}
 \maketitle
 
 \begin{abstract}
   We state, prove the correctness of, and discuss the complexity of some general
   purpose algorithms for counting permutations with specified configurations of
   consecutive sequences. The algorithms are based on a theorem that describes how
-  the number of permutations with consecutive sequences is linked to the number of
+  the number of permutations with consecutive sequences can be reduced to the number of
   permutations with no consecutive sequences at all.
 \end{abstract}
 
@@ -111,7 +111,7 @@ the literature, would be much appreciated.
 \begin{definition}
   Let $P\in {\mathcal P}_n$, and let $k \geq 2$.
   A {\bf consecutive sequence} of length $k$ in $P$ is a contiguous subsequence of $k$ consecutive
-  integers in $p$, that is, a contiguous subsequence of the form $(i, i+1, \ldots, i+k-1)$.
+  integers in $P$, that is, a contiguous subsequence of the form $(i, i+1, \ldots, i+k-1)$.
   A consecutive sequence is called {\bf maximal} if it is not a subsequence of a consecutive sequence
   of greater length.
 \end{definition}
@@ -146,16 +146,16 @@ to form a consecutive triple (specify ``three maximal consecutive sequences of l
 consecutive sequences of any other length'').
 
 Building on top of that, Theorem \ref{theorem_count_by_length_and_count} describes a generic, customizable algorithm
-that iterates over configurations of maximal consecutive sequences by length and count.
+that iterates over configurations of maximal consecutive sequences by lengths and counts.
 A user-supplied function decides if permutations with a given configuration should be included in the count or not.
 For example, the user-supplied function could accept any configuration that specifies a non-zero count for maximal
 sequences of length two and a zero count for all other lengths, and reject all others configurations.
 The result would be the number
 of permutations that have any number of consecutive pairs, but no linked pairs that form larger
 consecutive sequences. When the algorithm iterates over {\it all} possible specifications of maximal
-consecutive sequences by length and count, its complexity is only marginally better than a brute force
-solution to the problem. However, our implementation provides custumizability that can lead to vastly
-improved complexity in many cases, such as the example that we just mentioned.
+consecutive sequences by lengths and counts, its complexity, although dramatically better than a brute force
+solution to the problem, leaves a lot to be desired. However, our implementation provides custumizability
+that can lead to vastly improved complexity in many cases, such as the example that we just mentioned.
 
 Finally, the last section of this paper discusses how to use our core algorithms, which deal with
 maximal consecutive sequences, to answer questions regarding just plain consecutive sequences.
@@ -342,7 +342,7 @@ us an algorithm to calculate the number of permutations of $n$ integers that hav
 sequences of specified lengths with specified initial elements. However, judging from experience, that algorithm
 isn't very interesting. The description of consecutive sequences is just too specific. What one wants
 is being able to count the permutations with consecutive sequences or maximal consecutive sequences that
-are specified by length and count, as in, ``exactly $x$ number of consecutive triples,'' or, ``exactly
+are specified by lengths and counts, as in, ``exactly $x$ number of consecutive triples,'' or, ``exactly
 $x$ number of consecutive triples and no longer consecutive sequences,'' or some such thing. This will
 be achieved in the next two sections.
 
@@ -367,9 +367,11 @@ consecutive sequences of length $k$ that start at position $a$ and vise versa.
   set of pairs of integers $$\{\,(k_1, c_1), (k_2, c_2), \ldots,(k_m, c_m)\,\}$$ with the following properties:
   \begin{enumerate}[(i)]
   \item
-    $k_i \geq 2$ and $c_i \geq 1$ for $1\leq i \leq m$, and
+    $k_i \geq 2$ and $c_i \geq 1$ for $1\leq i \leq m$,
   \item
-    $\sum_{i=1}^m c_i \cdot k_i \leq n$.
+    $\sum_{i=1}^m c_i \cdot k_i \leq n$, and
+  \item
+    $k_i \neq k_j$ for $1\leq i, j \leq m$.
   \end{enumerate}
 \end{definition}
 
@@ -402,8 +404,8 @@ with the properties
   for $1\leq i \leq m$, there are exactly $c_i$ many $j$ with $1\leq j \leq p$ and $l_j = k_i$.
 \end{enumerate}
 
-So if we denote the set of all MCS-specifications by lengths and initial elements that satisfy (i) and
-(ii) above by ${\mathcal S}_T$, then we have, as a first step towards our algorithm for calculating
+So if we denote the set of all MCS-specifications by lengths and initial elements that satisfy (i)--(iii)
+above by ${\mathcal S}_T$, then we have, as a first step towards our algorithm for calculating
 $|{\mathcal R}_{(n,T)}|$,
 $$
 |{\mathcal R}_{(n,T)}| = \sum_{S\in {\mathcal S}_T} |{\mathcal Q}_{(n,S)}|.\eqno(1)
@@ -425,7 +427,7 @@ $$
 
 Therefore, all that remains to do is to figure out what $|{\mathcal S}_T|$ is:
 how many MCS-specifications by lengths and initial elements
-are there that satisfy (i) and (ii) above? That number is fairly easy to describe: it is the number of ways
+are there that satisfy (i)--(iii) above? That number is fairly easy to describe: it is the number of ways
 in which one can choose subsets
 $A_1, A_2, \ldots, A_{m}\subset \{\,1, 2, \ldots, n\,\}$ such that  
 
@@ -522,16 +524,34 @@ Therefore, the following theorem requires no further proof.
   \endproof
 \end{theorem}
 
-The problem with this ``algorithm'' is that the number of MCS-specifications by lengths and counts
-for $n$ equals
-$$
-\prod_{i=2}^{n}\lfloor\frac{n}{i}\rfloor + 1\,, \text{Wrong, wrong, wrong! Will fix soon.}
-$$
-which is similar to $\frac{n^n}{n!}$. Therefore, the algorithm affords little advantage over
-the brute force solution of looking at every permutation and checking if it meets the desired
-requirement \cite{NumAtoms}. Our implementation of the algorithm \cite{Algos} offers an optimization that
-cuts down on the number of MCS-specifications by lengths and counts that are considered in
-the sum in (3) above. The user can specify a lower and/or upper bound for non-zero lengths
+The problem with this algorithm is that the number of MCS-specifications by lengths and counts
+for $n$ grows faster with $n$ than one would wish. By definition, the number of these specifications is
+\begin{eqnarray*}
+  \big|\{\,(k_1, c_1), (k_2, c_2), \ldots,(k_m, c_m) & \mid & k_i \geq 2,\ c_i \geq 1 \text{ for } 1\leq i \leq m,\\
+                                                 &      & \sum_{i=1}^m c_i \cdot k_i \leq n,\
+                                                          k_i\neq k_j\text{ for } 1\leq i,j \leq m \,\}\big|\,.
+\end{eqnarray*}
+Determining what this is looks like a non-trivial combinatorial problem unto iteself.
+At this point, the best we know to do is to look at some numbers. The brute force
+approach to counting permutations begins to encounter performance issues at $n=12$, as
+$12!=4.79001600\times 10^8$, and performance degrades quickly after that.
+A comparable number of MCS-specifications by lengths and counts,
+namely, $4.83502844\times 10^8$, is reached for $n=108$. Indeed, the algorithm of Theorem
+\ref{theorem_iterating_over_specs_by_count_by_length_and_count} starts to noticeably slow
+down for $n$ around $100$. Considering that $60!$ is roughly equal to the number of atoms
+in the known, observable universe, being able to count permutations for $n=100$ must be
+considered an achievement. On the other hand, $100$ is not exactly, shall we say, a large number.
+
+Luckily, many common questions regarding the number of permutations with certain consecutive
+sequences allow an optimization that can cut down dramatially on the number of MCS-specifications
+by lengths and counts that need to be considered in the sum in (3) above. Typically, when counting
+permutations with certain configurations of consecutive pairs, triples, quadruples, etc.
+(maximal or not necessarily maximal), one knows in advance that the selection function $f$ of
+Theorem \ref{theorem_iterating_over_specs_by_count_by_length_and_count} will reject every
+MCS-specification by lengths and counts that specifies a non-zero count for maximal consecutive
+sequences of length greater than some bound and/or less than some bound. To exploit that,
+our implementation of the algorithm \cite{Algos} lets the user specify a
+lower and/or upper bound for non-zero lengths
 of maximal consecutive sequences. If $l$ and $u$ are the specified bounds, then the algorithm
 will include only those MCS-specifications by lengths and counts in the sum in (3) above that
 specify 0 for any length less than $l$ and greater than $u$.
@@ -543,12 +563,12 @@ which are linked to form longer consecutive sequences, one would tell the algori
 to only generate those MCS-specifications by lengths and counts that specify a zero count for all lengths
 greater than 2. This cuts the length of the sum in (3) above down to $\lfloor\frac{n}{2}\rfloor + 1$. 
 
-Sometimes, it takes a bit of creativity to avoid the worst-case complexity of $\frac{n^n}{n!}$. Suppose,
+Sometimes, it takes a bit of creativity to avail oneself of the lower bound/upper bound optimization. Suppose,
 for example, that you wish to calculate the number of permutations that have at least one maximal consecutive
 sequence of length greater than or equal to $k$ for some $k$.
 As it stands, this condition does not allow you to use the lower bound/upper bound optimization.
 But you could also calculate the number of permutations that have no maximal consecutive sequences
-greater than or equal to $u$ and then subtract that from $n!$. Now the optimization is applicable.
+greater than or equal to $k$ and then subtract that from $n!$. Now the optimization is applicable.
 
 \section{Permutations with Consecutive Sequences}
 The algorithms we have discussed so far deal with the number of permutations having certain configurations
@@ -611,12 +631,6 @@ $k + c - 1$. Our algorithm package on github \cite{Algos} has a ready-to-use imp
 \bibitem{JedYang}
  This \href{https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order}{proof by Jed Yang}
   on Quora is short, elegant, and self-contained.
-
-\bibitem{NumAtoms}
-  It is a matter of discretion how much of an improvement over brute force one would consider an algorithm
-  whose complexity is of the order $\frac{n^n}{n!}$. Just consider that $60!$ is roughly equal to the number of atoms
-  in the known, observable universe, while the generation of the approximately $\frac{n^n}{n!}$ many
-  MCS-specifications by lengths and counts still chugs along happily at $n=60$.
 \end{thebibliography}
 
 \end{document}
