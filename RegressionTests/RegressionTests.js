@@ -22,7 +22,7 @@
 
 var numberOfPermutationsModule = require("ConsecutiveSequences.min.js");
 var bruteForceModule = require("./BruteForceCheck.js");
-var bigInt = require("BigInteger.js");
+var bigInt = require("BigInteger.min.js");
 
 var maxNumElementsForPermutationTests = 15;
 var maxNumElementsForBruteForceChecks = 11;

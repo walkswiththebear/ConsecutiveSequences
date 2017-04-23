@@ -32,7 +32,7 @@
  */
 algorithms = new function()
 {
-    var bigInt = require("BigInteger.js");
+    var bigInt = require("BigInteger.min.js");
 
     // Module Interface
     // ================
