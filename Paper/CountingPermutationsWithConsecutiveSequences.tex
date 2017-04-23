@@ -72,16 +72,16 @@
 
 \begin{document}
 \author{Thomas Becker\\ {\small \it thomas@greaterthanzero.com}}
-\title{Some General Purpose Algorithms for Counting Permutations with Consecutive Sequences}
+\title{Two General Purpose Algorithms for Counting Permutations with Consecutive Sequences}
 \date{\small April 22, 2017}
 \maketitle
 
 \begin{abstract}
-  We state, prove the correctness of, and discuss the complexity of some general
-  purpose algorithms for counting permutations with specified configurations of
-  consecutive sequences. The algorithms are based on a theorem that describes how
-  the number of permutations with consecutive sequences can be reduced to the number of
-  permutations with no consecutive sequences at all.
+  We state, prove the correctness of, and discuss the complexity of two general
+  purpose algorithms, one building upon the other, for counting permutations with
+  specified configurations of consecutive sequences. The algorithms are based on
+  a theorem that describes how counting permutations with consecutive sequences can
+  be reduced to counting permutations with no consecutive sequences at all.
 \end{abstract}
 
 \section{Preface}
@@ -118,8 +118,8 @@ the literature, would be much appreciated.
 
 There is a vast body of work regarding the count of permutations that have a specified configuration of
 consecutive sequences, such as permutations having a certain number of consecutive pairs or triples
-\cite{OeisRefs}. In this paper, we state, prove the correctness of, and discuss the complexity of some general
-purpose algorithms for
+\cite{OeisRefs}. In this paper, we state, prove the correctness of, and discuss the complexity of two general
+purpose algorithms, one based upon the other, for
 counting permutations whose maximal consecutive sequences are described in certain ways. The need
 for these algorithms, which are available under the MIT license \cite{Algos}, arose from the author's curiosity
 about the behavior of random shuffle mode on today's music players \cite{BlogPost}. The algorithms do not
@@ -145,7 +145,8 @@ calculate the number of permutations that have exactly three consecutive pairs, 
 to form a consecutive triple (specify ``three maximal consecutive sequences of length two, zero maximal
 consecutive sequences of any other length'').
 
-Building on top of that, Theorem \ref{theorem_count_by_length_and_count} describes a generic, customizable algorithm
+Building on top of that, Theorem \ref{theorem_iterating_over_specs_by_count_by_length_and_count}
+describes a generic, customizable algorithm
 that iterates over configurations of maximal consecutive sequences by lengths and counts.
 A user-supplied function decides if permutations with a given configuration should be included in the count or not.
 For example, the user-supplied function could accept any configuration that specifies a non-zero count for maximal
@@ -328,8 +329,8 @@ that are specified by $T$.
 It remains to show that no consecutive pair forms between the last element of $P_1$ and the first element of
 $P_2$ as we join the two to form $f(P)$. The last element of $P_1$ is $a_m$. The first element of $P_2$ is
 the result of the effect that $f$ had on the first element following the maximal consecutive sequence
-$a_m, a_m + 1, \ldots, a_m + (k -1)$ in $P$. That element was either less than or equal to $a_m$, in which
-case its value is unchanged, or it was greater than $a_m$ and unequal to $a_m + k$, in which case its value
+$a_m, a_m + 1, \ldots, a_m + (k -1)$ in $P$. That element was either less than $a_m$, in which
+case its value is unchanged, or it was greater than $a_m + (k_m-1)$ and unequal to $a_m + k$, in which case its value
 was changed to something not equal to $a_m + 1$. In either case, no consecutive pair forms at the juncture
 of $P_1$ and $P_2$. This concludes the proof that $f(P)\in {\mathcal Q}_{(n-(k_m-1),T)}$ and thus
 $f({\mathcal Q}_{(n,S)}) \subseteq {\mathcal Q}_{(n-(k_m-1),T)}$. We leave the proof of
@@ -404,7 +405,7 @@ with the properties
   for $1\leq i \leq m$, there are exactly $c_i$ many $j$ with $1\leq j \leq p$ and $l_j = k_i$.
 \end{enumerate}
 
-So if we denote the set of all MCS-specifications by lengths and initial elements that satisfy (i)--(iii)
+So if we denote the set of all MCS-specifications by lengths and initial elements that satisfy (i) and (ii)
 above by ${\mathcal S}_T$, then we have, as a first step towards our algorithm for calculating
 $|{\mathcal R}_{(n,T)}|$,
 $$
@@ -427,7 +428,7 @@ $$
 
 Therefore, all that remains to do is to figure out what $|{\mathcal S}_T|$ is:
 how many MCS-specifications by lengths and initial elements
-are there that satisfy (i)--(iii) above? That number is fairly easy to describe: it is the number of ways
+are there that satisfy (i) and (ii) above? That number is fairly easy to describe: it is the number of ways
 in which one can choose subsets
 $A_1, A_2, \ldots, A_{m}\subset \{\,1, 2, \ldots, n\,\}$ such that  
 
@@ -439,10 +440,11 @@ $A_1, A_2, \ldots, A_{m}\subset \{\,1, 2, \ldots, n\,\}$ such that
   be the initial value of a maximal consecutive sequence of length $k_i$.
 \end{enumerate}
 
-At first glance, it may seem rather tricky to figure out the number of ways in which the $A_i$ can be chosen.
+At first glance, it may seem difficult to figure out the number of ways in which the $A_i$ can be chosen.
 The key to making it easy lies in going back the proof of the equality
-$|{\mathcal Q}_{(n,S)}| = |{\mathcal U}_{n - (k - c)}|$, which we just used to pass from equation (1) to
-equation (2). This equality (Theorem \ref{theorem_count_by_length_and_initial_element}) was proved
+$|{\mathcal Q}_{(n,S)}| = |{\mathcal U}_{n - (k - c)}|$ of
+Theorem \ref{theorem_count_by_length_and_initial_element}, which we just used to pass from equation (1) to
+equation (2). This equality was proved
 by exhibiting a bijection between ${\mathcal Q}_{(n,S)}$ and ${\mathcal U}_{n - (k - c)}$.
 We mapped permutations with maximal consecutive sequences to shorter permutations without any consecutive
 sequences by striking from all maximal consecutive sequences all elements except for the
@@ -532,7 +534,7 @@ for $n$ grows faster with $n$ than one would wish. By definition, the number of 
                                                           k_i\neq k_j\text{ for } 1\leq i,j \leq m \,\}\big|\,.
 \end{eqnarray*}
 Determining what this is looks like a non-trivial combinatorial problem unto itself.
-At this point, the best we know to do is to look at some numbers. The brute force
+At this point, the best we know how to do is to look at some numbers. The brute force
 approach to counting permutations begins to encounter performance issues at $n=12$, as
 $12!=4.79001600\times 10^8$, and performance degrades quickly after that.
 A comparable number of MCS-specifications by lengths and counts,
@@ -587,10 +589,10 @@ To use our algorithms for answering this question, we need the following lemma w
 
 \begin{lemma}
   Let $n \geq 1$, let $T = \{\,(k_1, c_1), (k_2, c_2), \ldots,(k_m, c_m)\,\}$ be an
-  MCS-specification by lengths and counts for $n$. Furthermore, let $p\in {\mathcal R}_{(n,T)}$,
-  that is, $p$ is a permutation that meets the specification $T$, and let $k \geq 2$.
+  MCS-specification by lengths and counts for $n$. Furthermore, let $P\in {\mathcal R}_{(n,T)}$,
+  that is, $P$ is a permutation that meets the specification $T$, and let $k \geq 2$.
   Then the number of consecutive
-  sequences of length $k$ in $p$ equals
+  sequences of length $k$ in $P$ equals
   $$
   \sum_{\shortstack{$\scriptstyle i=1$\\$\scriptstyle k_i\geq k$}}^{m}c_i\cdot (k_i - k + 1)\,.
   $$
@@ -626,7 +628,7 @@ $k + c - 1$. Our algorithm package on github \cite{Algos} has a ready-to-use imp
     \href{https://github.com/walkswiththebear/ConsecutiveSequences}{ConsecutiveSequences} on github.
 
 \bibitem{BlogPost}
-    \href{http://blog.greaterthanzero.com/post/159874910652/some-mathematics-algorithms-and-probabilities}{Some Mathematics, Algorithms, and Probabilities Concerning Your Music Player’s Random Shuffle Mode} at the \href{https://www.greaterthanzero.com}{GreaterThanZero} company blog. 
+    \href{http://blog.greaterthanzero.com/post/159874910652/some-mathematics-algorithms-and-probabilities}{Some Mathematics, Algorithms, and Probabilities Concerning Your Music Player’s Random Shuffle Mode} at the GreaterThanZero company blog. 
 
 \bibitem{JedYang}
  This \href{https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order}{proof by Jed Yang}
