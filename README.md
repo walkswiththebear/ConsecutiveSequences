@@ -15,13 +15,22 @@ without certain configurations of consecutive sequences, centered around a gener
 consecutive sequences. However, we also give some algorithms that demonstrate how the 
 core algorithms can be employed to answer questions about consecutive sequences in general.
 
-This project was motivated by a rather light 
+Using the algorithms of this package, one can answer questions like, "How many 
+permutations of n elements are there that have at least one consecutive sequence
+of length greater than k?" or "How many permutations of n elements are there that have
+exactly m consecutive pairs and no consecutive sequences of length greater than 2?"
+
+The algorithms of this package by no means guarantee the best complexity for a specific
+question. The value of these algorithms is in their generality and their
+(relative) ease of use. They could be used for example as a double check by someone who
+is working on a recursion relation for a particular problem. Another use case can be found in this rather light 
 [blog post](http://blog.greaterthanzero.com/post/159874910652/some-mathematics-algorithms-and-probabilities) 
-on how random shuffle mode is implemented in today's digital music players. 
+on how random shuffle mode is implemented in today's digital music players. That blog
+post was the original motivation for developing this package.
 
 ## Mathematics
-The mathematical underpinnings of the algorithms, including correctness proofs, can be found in 
-[this paper](http://walkswiththebear.github.io/ConsecutiveSequences/Paper/CountingPermutationsWithConsecutiveSequences.pdf).
+The mathematical underpinnings of the algorithms, including correctness proofs and complexity discussions, 
+can be found in [this paper](http://walkswiththebear.github.io/ConsecutiveSequences/Paper/CountingPermutationsWithConsecutiveSequences.pdf).
 It is not likely that the paper contains any mathematical results that are not already known to combinatorial
 mathematicians. However, I could not find the results that I needed on the Web. Any feedback
 from people with knowledge and expertise in combinatorial mathematics would be much appreciated.
