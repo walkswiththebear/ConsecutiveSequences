@@ -3,7 +3,7 @@
 have certain configurations of consecutive sequences.
 
 ## Overview
-Consider a permutation P of the n natural numbers {1, ..., n}, and let k >= 2. A
+Consider a permutation P of the natural numbers {1, ..., n}, and let k >= 2. A
 **consecutive sequence** of length k in P is an occurrence of k consecutive
 integers in P, that is, an occurrence of a contiguous subsequence of the
 form (i, i+1, ..., i+k-1). A **maximal consecutive sequence** is a consecutive sequence
