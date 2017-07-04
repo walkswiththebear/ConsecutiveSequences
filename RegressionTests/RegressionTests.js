@@ -315,9 +315,17 @@ for(i = 2; i <= maxNumElementsForPermutationTests; ++i)
 
             if(k == 0)
             {
-                algorithmValueCheck =
-                    numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(i,
-                        2, j - 1) + numberOfPermutationsModule.numberOfPermutationsWithNoConsecutiveSequences(i);
+                if(j == 2)
+                {
+                    algorithmValueCheck = numberOfPermutationsModule.numberOfPermutationsWithNoConsecutiveSequences(i);
+                }
+                else
+                {
+                    algorithmValueCheck =
+                        numberOfPermutationsModule.numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(
+                            i, 2, j - 1) + numberOfPermutationsModule.numberOfPermutationsWithNoConsecutiveSequences(i);
+                }
+
                 if(algorithmValue.eq(algorithmValueCheck))
                 {
                     console.log("Double-check passed.");

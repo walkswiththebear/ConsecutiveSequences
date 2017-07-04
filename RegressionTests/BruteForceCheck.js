@@ -143,6 +143,24 @@ exports.functions = new function()
     };
 
     /**
+     * Returns the number of permutations that have the given number of maximal consecutive sequences
+     * of the given length and no other maximal consecutive sequences.
+     */
+    this.numberOfPermutationsWithGivenNumberOfMaximalConsecutiveSequencesOfGivenLengthAndNoOtherMaximalConsecutiveSequences =
+        function(
+            numElements,
+            number,
+            length
+        )
+        {
+            return this.countPermutations(numElements, function(permutation)
+            {
+                return hasGivenNumberOfMaximalConsecutiveSequencesOfGivenLengthAndNoOtherMaximalConsecutiveSequences(
+                    permutation, number, length);
+            });
+        };
+
+    /**
      * Returns the number of permutations that have at least one maximal consecutive sequence
      * in the indicated length range, but none outside of it.
      */
@@ -303,6 +321,56 @@ exports.functions = new function()
         }
 
         return false;
+    }
+
+    /**
+     * Returns true if the specified permutation has the given number of maximal consecutive sequences of the
+     * given length and no other maximal consecutive sequences.
+     */
+    function hasGivenNumberOfMaximalConsecutiveSequencesOfGivenLengthAndNoOtherMaximalConsecutiveSequences(
+        permutation,
+        number,
+        length
+    )
+    {
+        var len = permutation.length;
+        var currentConsecutiveSequenceLength = 1;
+        var numMatchingSequencesFound = 0;
+        var i;
+
+        for(i = 0; i < len - 1; ++i)
+        {
+            if(permutation[i + 1] == permutation[i] + 1)
+            {
+                ++currentConsecutiveSequenceLength;
+            }
+            else if(currentConsecutiveSequenceLength > 1)
+            {
+                if(currentConsecutiveSequenceLength != length)
+                {
+                    return false;
+                }
+                else
+                {
+                    ++numMatchingSequencesFound;
+                }
+                currentConsecutiveSequenceLength = 1;
+            }
+        }
+
+        if(currentConsecutiveSequenceLength > 1)
+        {
+            if(currentConsecutiveSequenceLength == length)
+            {
+                ++numMatchingSequencesFound;
+            }
+            else if(currentConsecutiveSequenceLength != length)
+            {
+                return false;
+            }
+        }
+
+        return numMatchingSequencesFound == number;
     }
 
     /**
