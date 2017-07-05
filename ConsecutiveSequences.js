@@ -61,103 +61,59 @@ algorithms = new function()
      * Preconditions:
      * ==============
      *
-     * 1. numElements is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
-     *    numElements >= 1
+     * 1. numElements is a javascript integer, and numElements >= 1
      *
-     * 2. The keys of the map numMaximalConsecutiveSequencesOfEachLength are strings that parse as bigInts, and as
-     *    integers, they are a subset of the set {2, ..., numElements}.
+     * 2. The keys of the map numMaximalConsecutiveSequencesOfEachLength are strings that parse as javascript
+     *    integers, and as integers, they are a subset of the set {2, ..., numElements}.
      *
-     * 3. The values of the map numMaximalConsecutiveSequencesOfEachLength are non-negative integers. Here, "integer"
-     *    means a js integer, a string that parses as a bigInt, or a bigInt.
+     * 3. The values of the map mcsSpecificationByLengthsAndCounts are non-negative javascript integers.
      */
     this.numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts = function(
-        numElementsIn,
+        numElements,
         mcsSpecificationByLengthsAndCounts
     )
     {
-        // Big ints
-        var numElements = bigInt(numElementsIn);
-        var bigZero = bigInt.zero;
-        var bigOne = bigInt.one;
+        // Dealing with the MCS spec conversion
+        //
+        var mcsSpecificationByLengthsAndCountsAsArray = new Array(numElements + 1);
+        var arrayOfRequestedMaximalConsecutiveSequenceLengths;
+        var numRequestedMaximalConsecutiveSequenceLengths;
 
         // Local variables
         //
-        var i;
-        var numMaximalConsecutiveSequencesOfRequestedLength;
         var requestedLength;
-        var requestedLengthBig;
+        var requestedLengthAsInt;
+        var requestedCount;
+        var requestedCountAsBigInt;
+        var bigZero = bigInt.zero;
+        var i, j;
 
-        // Variables for processing requested sequence lengths
-        //
-        var arrayOfMaximalRequestedConsecutiveSequenceLengths = Object.keys(mcsSpecificationByLengthsAndCounts);
-        var numMaximalRequestedConsecutiveSequenceLengths = arrayOfMaximalRequestedConsecutiveSequenceLengths.length;
-        var combinedLengthOfRequestedMaximalConsecutiveSequences = bigZero;
-        var numRequestedMaximalConsecutiveSequencesTotal = bigZero;
-
-        // Number of permutations with no consecutive sequences that will be blown up to obtain the
-        // desired permutations
-        var numBasePermutations;
-
-        // Number of elements in the base permutations
-        var numBaseElements;
-
-        // Number of ways to blow up each base permutation to obtain a requested permutation
-        var numMaximalConsecutiveSequenceConfigurations = bigOne;
-
-        // End result
-        var result;
-
-        // Determine the combined length of all requested maximal consecutive sequences and the
-        // total number of requested maximal consecutive sequences.
-        //
-        for(i = 0; i < numMaximalRequestedConsecutiveSequenceLengths; ++i) // don't use forEach because we may break
+        for(i = 0; i < numElements + 1; ++i)
         {
-            requestedLength = arrayOfMaximalRequestedConsecutiveSequenceLengths[i];
-            requestedLengthBig = bigInt(requestedLength);
-            numMaximalConsecutiveSequencesOfRequestedLength =
-                bigInt(mcsSpecificationByLengthsAndCounts[requestedLength]);
+            mcsSpecificationByLengthsAndCountsAsArray[i] = bigZero;
+        }
 
-            // Update the combined length of all requested maximal consecutive sequences.
-            //
-            combinedLengthOfRequestedMaximalConsecutiveSequences =
-                combinedLengthOfRequestedMaximalConsecutiveSequences.plus(
-                    requestedLengthBig.times(numMaximalConsecutiveSequencesOfRequestedLength));
-            if(combinedLengthOfRequestedMaximalConsecutiveSequences.gt(numElements))
+        arrayOfRequestedMaximalConsecutiveSequenceLengths = Object.keys(mcsSpecificationByLengthsAndCounts);
+        numRequestedMaximalConsecutiveSequenceLengths = arrayOfRequestedMaximalConsecutiveSequenceLengths.length;
+
+        for(j = 0; j < numRequestedMaximalConsecutiveSequenceLengths; ++j)
+        {
+            requestedLength = arrayOfRequestedMaximalConsecutiveSequenceLengths[j];
+            requestedLengthAsInt = parseInt(requestedLength, 10);
+            requestedCount = mcsSpecificationByLengthsAndCounts[requestedLength];
+            requestedCountAsBigInt = bigInt(requestedCount)
+            if(requestedLengthAsInt <= numElements)
+            {
+                mcsSpecificationByLengthsAndCountsAsArray[requestedLengthAsInt] = requestedCount;
+            }
+            else if(requestedCountAsBigInt.gt(bigZero))
             {
                 return bigZero;
             }
-
-            // Update the total number of requested maximal consecutive sequences (of any length).
-            numRequestedMaximalConsecutiveSequencesTotal =
-                numRequestedMaximalConsecutiveSequencesTotal.plus(numMaximalConsecutiveSequencesOfRequestedLength);
         }
 
-        // Determine the number of base permutations, i.e., the permutations with no consecutive sequences
-        // that will be blown up to permutations of numElements with the requested numbers of maximal consecutive
-        // sequences.
-        //
-        numBaseElements = numElements.minus(
-            combinedLengthOfRequestedMaximalConsecutiveSequences.minus(numRequestedMaximalConsecutiveSequencesTotal));
-        numBasePermutations = this.numberOfPermutationsWithNoConsecutiveSequences(numBaseElements);
-
-        // Determine the number of ways that the requested maximal consecutive sequences can be arranged (by length)
-        // within numElements elements.
-        //
-        numMaximalConsecutiveSequenceConfigurations =
-            factorialExt(numBaseElements.minus(numRequestedMaximalConsecutiveSequencesTotal.minus(bigOne)),
-                numBaseElements);
-        arrayOfMaximalRequestedConsecutiveSequenceLengths.forEach(function(requestedLength)
-        {
-            numMaximalConsecutiveSequenceConfigurations = numMaximalConsecutiveSequenceConfigurations.divide(
-                factorialExt(bigOne, bigInt(mcsSpecificationByLengthsAndCounts[requestedLength])));
-        });
-
-        // Each of the requested permutations can be obtained in exactly one way by choosing a base
-        // permutation, then choosing one way of arranging the requested maximal consecutive sequences by
-        // length.
-        //
-        result = numBasePermutations.times(numMaximalConsecutiveSequenceConfigurations);
-        return result;
+        return numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCountsInternal.call(this, numElements,
+            mcsSpecificationByLengthsAndCountsAsArray);
     };
 
     /**
@@ -201,7 +157,7 @@ algorithms = new function()
         {
             return bigInt.zero;
         }
-        
+
         if(minLength > maxLength)
         {
             return this.numberOfPermutationsWithNoConsecutiveSequences(numElements);
@@ -243,8 +199,6 @@ algorithms = new function()
             var maxNumMaximalConsecutiveSequencesOfRecursiveLength;
             var numMaximalConsecutiveSequencesOfRecursiveLength;
 
-            var mcsSpecificationByLengthsAndCountsAsMap = {};
-
             // The recursion bottoms out in two cases:
             //
             // 1. We've looked at all consecutive sequence lengths down to the minimum according to the
@@ -258,20 +212,9 @@ algorithms = new function()
                 //
                 if(selectionCondition.acceptMcsSpecification(mcsSpecificationByLengthsAndCounts))
                 {
-                    mcsSpecificationByLengthsAndCounts.forEach(function(
-                        elem,
-                        index
-                    )
-                    {
-                        if(!elem.eq(bigZero))
-                        {
-                            mcsSpecificationByLengthsAndCountsAsMap[index.toString()] = elem;
-                        }
-                    });
-
                     result = result.plus(
-                        this.numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElementsBig,
-                            mcsSpecificationByLengthsAndCountsAsMap));
+                        numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCountsInternal.call(this,
+                            numElementsBig, mcsSpecificationByLengthsAndCounts));
                 }
                 return;
             }
@@ -459,7 +402,7 @@ algorithms = new function()
             return true;
         };
 
-        return factorialExt(bigInt.one, numElements)
+        return factorialExt(bigInt.one, bigInt(numElements))
             .minus(this.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements,
                 this.getNewSelectionCondition(acceptMcsSpecification, undefined, minLength - 1)));
     };
@@ -582,7 +525,7 @@ algorithms = new function()
      */
     this.numberOfPermutations = function(numElements)
     {
-        return factorialExt(bigInt(2), numElements)
+        return factorialExt(bigInt(2), bigInt(numElements))
     }
 
     /**
@@ -712,6 +655,105 @@ algorithms = new function()
 
     // Private Helpers
     // ===============
+
+    /**
+     * Implementation of the function numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts.
+     * This internal version takes the mcsSpecificationByLengthsAndCounts as an array. That way, it plays
+     * well with the function numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts. For
+     * clients who use this function directly, a map is more convenient as a representation of the MCS spec.
+     * See numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts for preconds etc.
+     */
+    function numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCountsInternal(
+        numElementsIn,
+        mcsSpecificationByLengthsAndCounts
+    )
+    {
+        // Big ints
+        var numElements = bigInt(numElementsIn);
+        var bigZero = bigInt.zero;
+        var bigOne = bigInt.one;
+
+        // Local variables
+        //
+        var i;
+        var numMaximalConsecutiveSequencesOfRequestedLength;
+        var requestedLength;
+
+        // Variables for processing requested sequence lengths
+        //
+        var combinedLengthOfRequestedMaximalConsecutiveSequences = bigZero;
+        var numRequestedMaximalConsecutiveSequencesTotal = bigZero;
+
+        // Number of permutations with no consecutive sequences that will be blown up to obtain the
+        // desired permutations
+        var numBasePermutations;
+
+        // Number of elements in the base permutations
+        var numBaseElements;
+
+        // Number of ways to blow up each base permutation to obtain a requested permutation
+        var numMaximalConsecutiveSequenceConfigurations = bigOne;
+
+        // End result
+        var result;
+
+        // Determine the combined length of all requested maximal consecutive sequences and the
+        // total number of requested maximal consecutive sequences.
+        //
+        for(i = 2; i <= numElementsIn; ++i) // don't use forEach because we may break
+        {
+            requestedLength = bigInt(i);
+            numMaximalConsecutiveSequencesOfRequestedLength = bigInt(mcsSpecificationByLengthsAndCounts[i]);
+
+            // Update the combined length of all requested maximal consecutive sequences.
+            //
+            combinedLengthOfRequestedMaximalConsecutiveSequences =
+                combinedLengthOfRequestedMaximalConsecutiveSequences.plus(
+                    requestedLength.times(numMaximalConsecutiveSequencesOfRequestedLength));
+
+            // There may not be enough elements to accomodate the requested series.
+            //
+            if(combinedLengthOfRequestedMaximalConsecutiveSequences.gt(numElements))
+            {
+                return bigZero;
+            }
+
+            // Update the total number of requested maximal consecutive sequences (of any length).
+            numRequestedMaximalConsecutiveSequencesTotal =
+                numRequestedMaximalConsecutiveSequencesTotal.plus(numMaximalConsecutiveSequencesOfRequestedLength);
+        }
+
+        // Determine the number of base permutations, i.e., the permutations with no consecutive sequences
+        // that will be blown up to permutations of numElements with the requested numbers of maximal consecutive
+        // sequences.
+        //
+        numBaseElements = numElements.minus(
+            combinedLengthOfRequestedMaximalConsecutiveSequences.minus(numRequestedMaximalConsecutiveSequencesTotal));
+        numBasePermutations = this.numberOfPermutationsWithNoConsecutiveSequences(numBaseElements);
+
+        // Determine the number of ways that the requested maximal consecutive sequences can be arranged (by length)
+        // within numElements elements.
+        //
+        numMaximalConsecutiveSequenceConfigurations =
+            factorialExt(numBaseElements.minus(numRequestedMaximalConsecutiveSequencesTotal.minus(bigOne)),
+                numBaseElements);
+        mcsSpecificationByLengthsAndCounts.forEach(function(numRequested)
+        {
+            var numRequestedBig = bigInt(numRequested)
+            if(numRequestedBig.gt(0))
+            {
+                numMaximalConsecutiveSequenceConfigurations =
+                    numMaximalConsecutiveSequenceConfigurations.divide(factorialExt(bigOne, bigInt(numRequestedBig)));
+            }
+        });
+
+        // Each of the requested permutations can be obtained in exactly one way by choosing a base
+        // permutation, then choosing one way of arranging the requested maximal consecutive sequences by
+        // length.
+        //
+        result = numBasePermutations.times(numMaximalConsecutiveSequenceConfigurations);
+        return result;
+    };
 
     /**
      * Returns the product of the integers fromAndIncluding, fromAndIncluding + 1, ..., toAndIncluding.
