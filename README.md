@@ -67,7 +67,7 @@ or get it from [Peter Olson's github repository](https://github.com/peterolson/B
 
 #### `numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElements, mcsSpecificationByLengthsAndCounts)`
 
-An MCS-specification by lengths and counts for an integer numElements describes the maximal consecutive
+An *MCS-specification by lengths and counts* for an integer numElements describes the maximal consecutive
 sequences in a permutation of numElements elements. It specifies how many maximal consecutive sequences
 of each possible length the permutation contains.
      
@@ -119,7 +119,7 @@ other consecutive sequences.
 
 This is the centerpiece and the most general algorithm of the package.
 
-An MCS-specification by lengths and counts for an integer numElements describes the maximal consecutive
+Recall that an MCS-specification by lengths and counts for an integer numElements describes the maximal consecutive
 sequences in a permutation of numElements elements. It is a map (i.e., a js object) that specifies how many 
 maximal consecutive sequences of each possible length the permutation contains. This function iterates over all 
 MCS-specifications by lengths and counts for `numElements` and lets a client-supplied selection condition 
