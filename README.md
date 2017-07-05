@@ -67,11 +67,11 @@ or get it from [Peter Olson's github repository](https://github.com/peterolson/B
 
 #### `numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElements, mcsSpecificationByLengthsAndCounts)`
 
-An *MCS-specification by lengths and counts* for an integer numElements describes the maximal consecutive
-sequences in a permutation of numElements elements. It specifies how many maximal consecutive sequences
+An *MCS-specification by lengths and counts* for an integer `numElements` describes the maximal consecutive
+sequences in a permutation of `numElements` elements. It specifies how many maximal consecutive sequences
 of each possible length the permutation contains.
      
-This function returns the number of permutations of numElements elements that meet a given MCS-specification
+This function returns the number of permutations of `numElements` elements that meet a given MCS-specification
 by lengths and counts. The result type is bigInt.
 
 This is not our most general algorithm for counting permutations with a specified configuration of
@@ -119,8 +119,8 @@ other consecutive sequences.
 
 This is the centerpiece and the most general algorithm of the package.
 
-Recall that an MCS-specification by lengths and counts for an integer numElements describes the maximal consecutive
-sequences in a permutation of numElements elements. It is a map (i.e., a js object) that specifies how many 
+Recall that an MCS-specification by lengths and counts for an integer `numElements` describes the maximal consecutive
+sequences in a permutation of `numElements` elements. It is a map (i.e., a js object) that specifies how many 
 maximal consecutive sequences of each possible length the permutation contains. This function iterates over all 
 MCS-specifications by lengths and counts for `numElements` and lets a client-supplied selection condition 
 decide which ones to accept and which ones to reject. The function returns the number of permutations that 
