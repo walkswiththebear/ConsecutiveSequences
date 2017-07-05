@@ -65,47 +65,20 @@ or get it from [Peter Olson's github repository](https://github.com/peterolson/B
 
 ### Algorithms
 
-#### `numberOfPermutations(numElements)`
-     
-Returns the number of permutations of `numElements`, that is, `numElements!`. The return type is bigInt.
-
-This function is provided
-here because it is sometimes more efficient to calculate the size of the complement of a set of
-permutations that one is interested in than to calculate the size of that set directly. The function
-
-`numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo`
-
-below is an example.
-    
-##### Precondition
- - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
-`numElements` >= 1.
-
-***
-
-#### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
-
-Returns the number of permutations of `numElements` elements that have no consecutive sequences.
-The result type is bigInt. 
-
-The implementation is based on the 
-<a href="https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order" target="_blank">recurrence relation given by Jed Yang on Quora</a>. 
-Since the recursive formula for calculating the result for n elements refers to the value for 
-n&minus;1 and n&minus;2 elements, a straightforward implementation is exponential in n. This 
-function implements a bottom-up version that uses constant space and linear time.
-    
-##### Precondition
- - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
-`numElements` >= 1.
-
-***
-
 #### `numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(numElements, mcsSpecificationByLengthsAndCounts)`
 
-An MCS-specification by lengths and counts is a map that specifies, for each possible length, the
-number of maximal consecutive sequences of that length. This function returns the number of
-permutations of `numElements` elements that meet a given MCS-specification by lengths and counts.
-The result type is bigInt.
+An MCS-specification by lengths and counts for an integer numElements describes the maximal consecutive
+sequences in a permutation of numElements elements. It specifies how many maximal consecutive sequences
+of each possible length the permutation contains.
+     
+This function returns the number of permutations of numElements elements that meet a given MCS-specification
+by lengths and counts. The result type is bigInt.
+
+This is not our most general algorithm for counting permutations with a specified configuration of
+maximal consecutive sequences. However, when it is applicable, it is easier to use than the most
+general algorithm. An example for a use case of this algorithm is the question, "How many permutations 
+of n elements are there that have exactly m consecutive pairs and no consecutive sequences of length 
+greater than 2?" See the example below for how exactly it's done.
 
 The argument `mcsSpecificationByLengthsAndCounts` must be a map (i.e., a js object) whose keys are 
 a subset of the set {2, ..., `numElements`}. For each key k, the value of k is interpreted as the 
@@ -127,16 +100,33 @@ and as integers, they are a subset of the set {2, ..., `numElements`}.
 - The values of the map `numMaximalConsecutiveSequencesOfEachLength` are non-negative integers. Here,
 "integer" means a js integer, a string that parses as a bigInt, or a bigInt.
 
+##### Example:
+
+The following code assigns to the variable `numPermutations` the number of permutations of 42 elements
+that have exactly one consecutive triple, 7 consecutive pairs that are not part of the triple, and no 
+other consecutive sequences.
+
+    var numberOfPermutationsModule = require("ConsecutiveSequences.min.js");
+    var numPermutations = 
+      numberOfPermutationsModule.numberOfPermutationsThatMeetAnMcsSpecificationByLengthsAndCounts(
+        42,
+        {"2" : 7, "3": 1}
+      );
+
 ***
 
 #### `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(numElements, selectionCondition)`
 
-An MCS-specification by lengths and counts is a map (i.e., a js object) that specifies, for each possible length,
-the number of maximal consecutive sequences of that length. This function iterates over all MCS-specifications
-by lengths and counts for `numElements` and lets a client-supplied selection condition decide which ones to accept
-and which ones to reject. The function returns the number of permutations that meet any one of the accepted 
-MCS-specifications. The result type is bigInt. See the documentation of the function `getNewSelectionCondition` 
-for details on how the client-supplied selection condition needs to be written.
+This is the centerpiece and the most general algorithm of the package.
+
+An MCS-specification by lengths and counts for an integer numElements describes the maximal consecutive
+sequences in a permutation of numElements elements. It is a map (i.e., a js object) that specifies how many 
+maximal consecutive sequences of each possible length the permutation contains. This function iterates over all 
+MCS-specifications by lengths and counts for `numElements` and lets a client-supplied selection condition 
+decide which ones to accept and which ones to reject. The function returns the number of permutations that 
+meet any one of the accepted MCS-specifications. The result type is bigInt. See the documentation of the 
+function `getNewSelectionCondition` for details on how the client-supplied selection condition needs to be 
+written.
 
 The total number of MCS-specifications by lengths and counts tends to be large. This function begins to encounter performance problems for values of `numElements` around 100. Therefore, the client-supplied selection
 condition offers ways to cut down on the number of MCS-specifications that this function presents for
@@ -148,6 +138,31 @@ selection. See the documentation of the function `getNewSelectionCondition` for 
 
  - `selectionCondition` is an instance of `SelectionCondition`. (See the documentation of `getNewSelectionCondition`.)
 
+##### Example
+
+To best understand this example, please refer also to the documentation of `getNewSelectionCondition`
+below. The following code assigns to the variable `numPermutations` the number of permutations of 42 elements
+that have at most one maximal consecutive sequence of each possible length.
+
+    var bigInt = require("BigInteger.min.js");
+    var numberOfPermutationsModule = require("ConsecutiveSequences.min.js");
+
+    var numElements = 42;
+    var acceptMcsSpecification = function(mcsSpecificationByLengthsAndCounts) {
+      for(var i=2; i<=numElements; ++i) {
+        if(mcsSpecificationByLengthsAndCounts[i].gt(bigInt.one)) {
+          return false;
+        }
+        return true;
+      }
+    };
+
+    var numPermutations =
+      numberOfPermutationsModule.numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts(
+        numElements,
+        numberOfPermutationsModule.getNewSelectionCondition(acceptMcsSpecification)
+      );
+
 ***
 
 #### `getNewSelectionCondition(acceptMcsSpecification, [noMaximalConsecutiveSequencesOfLengthLessThan, noMaximalConsecutiveSequencesOfLengthGreaterThan])`
@@ -157,19 +172,19 @@ Factory function for obtaining a new selection condition, to be used with the fu
 of that function before reading this documentation.
 
 The function `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts` presents each possible
-MCS-specification by lengths and counts to the selection condition, for a decision whether the permutations
-that meet that MCS-specification should be included in the count.
+MCS-specification by lengths and counts for `numElements` elements to the selection condition, for a decision 
+whether the permutations that meet that MCS-specification should be included in the count.
 
 More precisely, if `selectionCondition` is the `SelectionCondition` object obtained from `getNewSelectionCondition`,
 the function `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts` calls
 
 `selectionCondition.acceptMcsSpecification(spec);`
 
-for every MCS-specification by lengths and counts. Here, `spec` is an array whose entry at index i is
-the number of maximal consecutive sequences of length i. The elements of the array are bigInts, and
-the entries at i=0 and i=1 are always 0. If the client-supplied function `acceptMcsSpecification` 
-returns true on such a specification, the permutations that meet that specification will be accepted 
-for the count; otherwise, they won't be.
+for every MCS-specification by lengths and counts for `numElements` elements. Here, `spec` is an array 
+of length `numElements + 1` whose entry at index i is the number of maximal consecutive sequences of length i. 
+The elements of the array are bigInts, and the entries at i=0 and i=1 are always 0. If the client-supplied 
+function `acceptMcsSpecification` returns true on such a specification, the permutations that meet that 
+specification will be accepted for the count; otherwise, they won't be.
 
 There is one optimization that may allow the client to cut down on the number of MCS-specifications by
 lengths and counts that need to be looked at. If you pass an integer `minLength` as the second argument to
@@ -202,7 +217,8 @@ and how to use the `minLength`/`maxLength` optimization.
 #### `numberOfPermutationsWithMaximalConsecutiveSequencesOnlyInLengthRange(numElements, minLength, maxLength)`
 
 Returns the number of permutations of `numElements` elements that have at least one maximal consecutive
-sequence within a specified length range, but none of any length outside that range. The result type is bigInt.
+sequence within a specified length range `[minLength, maxLength]`, but none of any length outside that range. 
+The result type is bigInt.
 
 This algorithm is provided mainly as an example of how to use the `minLength`/`maxLength` feature of
 the selection condition for the function `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts`.
@@ -278,6 +294,41 @@ sequences.
  - `length` is a js integer, and `length` >= 2.
 
  - `count` is a js integer, and `count` >= 0.
+
+***
+
+#### `numberOfPermutations(numElements)`
+     
+Returns the number of permutations of `numElements`, that is, `numElements!`. The return type is bigInt.
+
+This function is provided
+here because it is sometimes more efficient to calculate the size of the complement of a set of
+permutations that one is interested in than to calculate the size of that set directly. The function
+
+`numberOfPermutationsWithAtLeastOneMaximalConsecutiveSequenceOfLengthGreaterThanOrEqualTo`
+
+below is an example.
+    
+##### Precondition
+ - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
+`numElements` >= 1.
+
+***
+
+#### `numberOfPermutationsWithNoConsecutiveSequences(numElements)`
+
+Returns the number of permutations of `numElements` elements that have no consecutive sequences.
+The result type is bigInt. 
+
+The implementation is based on the 
+<a href="https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order" target="_blank">recurrence relation given by Jed Yang on Quora</a>. 
+Since the recursive formula for calculating the result for n elements refers to the value for 
+n&minus;1 and n&minus;2 elements, a straightforward implementation is exponential in n. This 
+function implements a bottom-up version that uses constant space and linear time.
+    
+##### Precondition
+ - `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
+`numElements` >= 1.
 
 ***
 
