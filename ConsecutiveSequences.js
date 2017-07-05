@@ -46,7 +46,7 @@ algorithms = new function()
      * of each possible length the permutation contains.
      *
      * This function returns the number of permutations of numElements elements that meet a given MCS-specification
-     * by lengths and counts.
+     * by lengths and counts. The result type is BigInt.
      *
      * The argument mcsSpecificationByLengthsAndCounts must be a map whose keys are a subset of the set
      * {2, ..., numElements}. For each key k, the value of k is interpreted as the desired number of
