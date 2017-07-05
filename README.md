@@ -168,7 +168,7 @@ that have at most one maximal consecutive sequence of each possible length.
 #### `getNewSelectionCondition(acceptMcsSpecification, [noMaximalConsecutiveSequencesOfLengthLessThan, noMaximalConsecutiveSequencesOfLengthGreaterThan])`
 
 Factory function for obtaining a new selection condition, to be used with the function
-`numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts`. Read the documentation
+`numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts`. Please read the documentation
 of that function before reading this documentation.
 
 The function `numberOfPermutationsThatMeetCertainMcsSpecificationsByLengthsAndCounts` presents each possible
