@@ -91,14 +91,12 @@ number of maximal consecutive sequences of that length is assumed to be zero. Ho
 maximal consecutive sequences may also be requested explicitly with a zero value.
 
 ##### Preconditions:
-- `numElements` is an integer (i.e., a js integer, a string that parses as a bigInt, or a bigInt), and
-`numElements` >= 1.
+- `numElements` is an javascript integer, and `numElements` >= 1.
 
-- The keys of the map `numMaximalConsecutiveSequencesOfEachLength` are strings that parse as bigInts,
+- The keys of the map `numMaximalConsecutiveSequencesOfEachLength` are strings that parse as javascript integers,
 and as integers, they are a subset of the set {2, ..., `numElements`}.
 
-- The values of the map `numMaximalConsecutiveSequencesOfEachLength` are non-negative integers. Here,
-"integer" means a js integer, a string that parses as a bigInt, or a bigInt.
+- The values of the map `numMaximalConsecutiveSequencesOfEachLength` are non-negative javascript integers.
 
 ##### Example:
 
@@ -299,7 +297,7 @@ sequences.
 
 #### `numberOfPermutations(numElements)`
      
-Returns the number of permutations of `numElements`, that is, `numElements!`. The return type is bigInt.
+Returns the number of permutations of `numElements`, that is, `numElements!`. The result type is bigInt.
 
 This function is provided
 here because it is sometimes more efficient to calculate the size of the complement of a set of
