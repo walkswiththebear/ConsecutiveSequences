@@ -90,11 +90,12 @@ a rather lightweight blog post \cite{BlogPost} on the subject of random shuffle 
 music players. In the process, I needed to know the number of permutations with certain
 configurations of consecutive sequences. The answers to many of my questions were readily
 available on the Web (see e.g. \cite{Oeis}),
-but there were also some questions to which I did not find the answer. Therefore, I sat down
-and wrote some general-purpose algorithms---based on one core mathematical theorem---to conveniently
+but there were also some questions to which I did not find the answer. Therefore, I
+wrote some general-purpose algorithms---based on one core mathematical theorem---to conveniently
 calculate the numbers that I needed. The algorithms are available on github \cite{Algos}.
-I checked the results against the Online Encyclopedia of Integer Sequences \cite{Oeis} and
-against brute force for small numbers of elements. But since the correctness of the algorithms
+I checked the results against brute force calculations, and, to the extent possible, against
+the Online Encyclopedia of Integer Sequences \cite{Oeis} for small numbers of elements.
+But since the correctness of the algorithms
 is far from obvious, I also felt that formal mathematical correctness proofs should be available.
 That is the reason why I wrote this paper. I am quite certain that there is nothing here that
 combinatorial mathematicians don't already know, but again, I was not able to quite find the things I
@@ -540,7 +541,7 @@ $12!=4.79001600\times 10^8$, and performance degrades quickly after that.
 A comparable number of MCS-specifications by lengths and counts,
 namely, $4.83502844\times 10^8$, is reached for $n=108$. Indeed, the algorithm of Theorem
 \ref{theorem_iterating_over_specs_by_count_by_length_and_count} starts to noticeably slow
-down for $n$ around $100$. Considering that $60!$ is roughly equal to the number of atoms
+down for $n$ around $100$ \cite{Performance}. Considering that $60!$ is roughly equal to the number of atoms
 in the known, observable universe, being able to count permutations for $n=100$ must be
 considered an achievement. On the other hand, $100$ is not exactly, shall we say, a large number.
 
@@ -633,6 +634,11 @@ $k + c - 1$. Our algorithm package on github \cite{Algos} has a ready-to-use imp
 \bibitem{JedYang}
  This \href{https://www.quora.com/What-is-the-probability-that-a-shuffled-music-album-will-have-at-least-two-songs-in-their-original-relative-consecutive-order}{proof by Jed Yang}
   on Quora is short, elegant, and self-contained.
+
+\bibitem{Performance}
+  This is assuming that only a small number of MCS-specifications are accepted for the count. If many are accepted,
+  the slowdown can begin as early as $n=75$.
+  
 \end{thebibliography}
 
 \end{document}
