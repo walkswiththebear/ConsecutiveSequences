@@ -1,6 +1,6 @@
 # ConsecutiveSequences
 **ConsecutiveSequences.js** is a set of algorithms for counting the permutations that 
-have certain configurations of consecutive sequences.
+have a specified configuration of consecutive sequences.
 
 ## Overview
 Consider a permutation P of the natural numbers {1, ..., n}, and let k >= 2. A
