@@ -97,7 +97,7 @@ I checked the results against brute force calculations, and, to the extent possi
 the Online Encyclopedia of Integer Sequences \cite{Oeis} for small numbers of elements.
 But since the correctness of the algorithms
 is far from obvious, I also felt that formal mathematical correctness proofs should be available.
-That is the reason why I wrote this paper. I am quite certain that there is nothing here that
+That is the reason why I wrote this paper. I would assume that there is nothing here that
 combinatorial mathematicians don't already know, but again, I was not able to quite find the things I
 needed online. Any feedback, particularly regarding references to
 the literature, would be much appreciated.
@@ -131,33 +131,38 @@ at all. This technique is a generalized form of an argument that the author enco
 \cite{JedYang}.
 
 Our core algorithms deal with the number of permutations having certain configurations of
-     {\it maximal} consecutive sequences. However, as we will show, they can be employed to answer questions
-     regarding just consecutive sequences as well.
+{\it maximal} consecutive sequences. However, as we will show, they can be employed to answer questions
+regarding just consecutive sequences as well.
 
-The organization of the paper is as follows. In Theorem \ref{theorem_count_by_length_and_initial_element},
-we give an auxiliary algorithm on which the
-two main algorithms are based. It calculates the number of permutations that meet a specification of
-maximal consecutive sequences by initial elements and lengths.
+The organization of the paper and the key results are as follows. In Theorem \ref{theorem_count_by_length_and_initial_element},
+we give an auxiliary algorithm on which the two main algorithms are based. It calculates the number of
+permutations that meet a specification of maximal consecutive sequences by initial elements and lengths.
+The theorem reduces that number of permutations to the number of permutations of fewer elements that
+have no consecutive sequences at all.
 
-Theorem \ref{theorem_count_by_length_and_count}
+Building on Theorem \ref{theorem_count_by_length_and_initial_element}, Theorem \ref{theorem_count_by_length_and_count}
 provides an algorithm to count the permutations whose maximal consecutive sequences have been specified by
 stating how many exactly of each length there should be. Using that algorithm, one may, for example,
 calculate the number of permutations that have exactly three consecutive pairs, none of which are linked
 to form a consecutive triple (specify ``three maximal consecutive sequences of length two, zero maximal
-consecutive sequences of any other length'').
+consecutive sequences of any other length''). The complexity of the algorithm is $O(n\cdot m)$, where
+$m$ is the number of lengths for which the number of maximal consecutive sequences has been specified
+as greater than zero.
 
 Building on top of that, Theorem \ref{theorem_iterating_over_specs_by_count_by_length_and_count}
 describes a generic, customizable algorithm
-that iterates over configurations of maximal consecutive sequences by lengths and counts.
-A user-supplied function decides if permutations with a given configuration should be included in the count or not.
+that iterates over specifications of maximal consecutive sequences by lengths and counts.
+A user-supplied function decides if permutations with a given specification should be included in the count or not.
 For example, the user-supplied function could accept any configuration that specifies a non-zero count for maximal
 sequences of length two and a zero count for all other lengths, and reject all others configurations.
-The result would be the number
-of permutations that have any number of consecutive pairs, but no linked pairs that form larger
-consecutive sequences. When the algorithm iterates over {\it all} possible specifications of maximal
-consecutive sequences by lengths and counts, its complexity, although dramatically better than a brute force
-solution to the problem, leaves a lot to be desired. However, our implementation provides custumizability
-that can lead to vastly improved complexity in many cases, such as the example that we just mentioned.
+The result would be the number of permutations that have any number of consecutive pairs, but no linked pairs
+that form larger consecutive sequences. This algortihm is of course no more than a ``glorified brute force
+algorithm'': instead of iterating of permutations, we iterate over specifications of maximal consecutive sequences
+by lengths and counts. While this is a dramatic improvement (see Section \ref{sec_iterating} for details), it
+is a brute force approach nonetheless. However, our implementation lets the user exploit the fact that oftentimes,
+not all specifications of maximal consecutive sequences by lengths and counts need to be looked at.
+This can lead to vastly improved complexity in many cases. In the example that we just mentioned, the iteration
+becomes linear in $n$.
 
 Finally, the last section of this paper discusses how to use our core algorithms, which deal with
 maximal consecutive sequences, to answer questions regarding just plain consecutive sequences.
@@ -502,7 +507,7 @@ is $O(m\cdot n)$, which, depending on how the $k_i$ are defined, can be anything
 $O(n)$ and $O(n^2)$.
 
 \section{Iterating over Specifications by Lengths And Counts}
-
+\label{sec_iterating}
 \begin{purpose}
   Present a generic algorithm for counting the permutations that meet certain specifications
   by lengths and counts, where a client-supplied function performs the selection of
