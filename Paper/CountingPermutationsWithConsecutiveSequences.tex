@@ -1,6 +1,6 @@
 
 %          -------------------------------------------------------------------------------------------------------------
-%          -- The Fixed Rate Equivalent (FREQ): Resolving the Multiple Solutions Issue of the Internal Rate of Return --
+%          ------------ Two General Purpose Algorithms for Counting Permutations with Consecutive Sequences ------------
 %          -------------------------------------------------------------------------------------------------------------
 %          ---------------------------------------------------- by -----------------------------------------------------
 %          -------------------------------------------------------------------------------------------------------------
@@ -153,11 +153,11 @@ Building on top of that, Theorem \ref{theorem_iterating_over_specs_by_count_by_l
 describes a generic, customizable algorithm
 that iterates over specifications of maximal consecutive sequences by lengths and counts.
 A user-supplied function decides if permutations with a given specification should be included in the count or not.
-For example, the user-supplied function could accept any configuration that specifies a non-zero count for maximal
-sequences of length two and a zero count for all other lengths, and reject all others configurations.
+For example, the user-supplied function could accept only configurations that specify a non-zero count for maximal
+sequences of length two and a zero count for all other lengths.
 The result would be the number of permutations that have any number of consecutive pairs, but no linked pairs
 that form larger consecutive sequences. This algortihm is of course no more than a ``glorified brute force
-algorithm'': instead of iterating of permutations, we iterate over specifications of maximal consecutive sequences
+algorithm'': instead of iterating over permutations, we iterate over specifications of maximal consecutive sequences
 by lengths and counts. While this is a dramatic improvement (see Section \ref{sec_iterating} for details), it
 is a brute force approach nonetheless. However, our implementation lets the user exploit the fact that oftentimes,
 not all specifications of maximal consecutive sequences by lengths and counts need to be looked at.
@@ -468,7 +468,7 @@ $$
 $$
 or, equivalently,
 $$
-\frac{(n-(k-c))!}{c_1! \cdot c_2! \cdot \ldots \cdot c_m! \cdot c!}\,,
+\frac{(n-(k-c))!}{c_1! \cdot c_2! \cdot \ldots \cdot c_m! \cdot (n-k)!}\,,
 $$
 or, equivalently,
 $$
@@ -490,7 +490,7 @@ $|{\mathcal R}_{(n,T)}|$ from $n$ and $T$.
   or, equivalently,
   $$
   |{\mathcal R}_{(n,T)}| = |{\mathcal U}_{n - (k - c)}| \cdot
-  \frac{(n-(k-c))!}{c_1! \cdot c_2! \cdot \ldots \cdot c_m! \cdot c!}\,,
+  \frac{(n-(k-c))!}{c_1! \cdot c_2! \cdot \ldots \cdot c_m! \cdot (n-k)!}\,,
   $$
   or, equivalently,
   \begin{eqnarray*}
@@ -568,8 +568,9 @@ For example, when
 calculating the number of permutations that have maximal consecutive pairs but no other maximal
 consecutive sequences, that is, permutations that have any number of consecutive pairs none of
 which are linked to form longer consecutive sequences, one would tell the algorithm
-to only generate those MCS-specifications by lengths and counts that specify a zero count for all lengths
-greater than 2. This cuts the length of the sum in (3) above down to $\lfloor\frac{n}{2}\rfloor + 1$. 
+to only generate those MCS-specifications by lengths and counts that specify a count greater than zero
+for length 2 and a zero count for all lengths greater than 2. This cuts the length of the sum in (3)
+above down to $\lfloor\frac{n}{2}\rfloor$. 
 
 Sometimes, it takes a bit of creativity to avail oneself of the lower bound/upper bound optimization. Suppose,
 for example, that you wish to calculate the number of permutations that have at least one maximal consecutive

@@ -349,6 +349,7 @@ algorithms = new function()
             {
                 return false;
             }
+            maxLength = Math.min(maxLength, numElements);
 
             for(i = minLength; i <= maxLength; ++i)
             {
@@ -711,7 +712,7 @@ algorithms = new function()
                 combinedLengthOfRequestedMaximalConsecutiveSequences.plus(
                     requestedLength.times(numMaximalConsecutiveSequencesOfRequestedLength));
 
-            // There may not be enough elements to accomodate the requested series.
+            // There may not be enough elements to accommodate the requested series.
             //
             if(combinedLengthOfRequestedMaximalConsecutiveSequences.gt(numElements))
             {
