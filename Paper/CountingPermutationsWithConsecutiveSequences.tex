@@ -156,7 +156,7 @@ A user-supplied function decides if permutations with a given specification shou
 For example, the user-supplied function could accept only configurations that specify a non-zero count for maximal
 sequences of length two and a zero count for all other lengths.
 The result would be the number of permutations that have any number of consecutive pairs, but no linked pairs
-that form larger consecutive sequences. This algortihm is of course no more than a ``glorified brute force
+that form larger consecutive sequences. This algorithm is of course no more than a ``glorified brute force
 algorithm'': instead of iterating over permutations, we iterate over specifications of maximal consecutive sequences
 by lengths and counts. While this is a dramatic improvement (see Section \ref{sec_iterating} for details), it
 is a brute force approach nonetheless. However, our implementation lets the user exploit the fact that oftentimes,
